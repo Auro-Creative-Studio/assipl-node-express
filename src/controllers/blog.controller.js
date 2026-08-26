@@ -2,14 +2,6 @@ const db = require("../models");
 const { Op } = require("sequelize");
 
 const Blog = db.Blog;
-const BlogCategory = db.BlogCategory;
-
-const includeCategory = [
-    {
-        model: BlogCategory,
-        as: "category",
-    },
-];
 
 const createSlug = (title) => {
     return title
@@ -51,9 +43,7 @@ exports.createBlog = async (req, res) => {
         }
 
         const blog = await Blog.create(req.body);
-        const createdBlog = await Blog.findByPk(blog.id, {
-            include: includeCategory,
-        });
+        const createdBlog = await Blog.findByPk(blog.id);
 
         return res.status(201).json({
             success: true,
@@ -71,7 +61,6 @@ exports.createBlog = async (req, res) => {
 exports.getAllBlogs = async (req, res) => {
     try {
         const blogs = await Blog.findAll({
-            include: includeCategory,
             order: [["id", "DESC"]],
         });
 
@@ -93,7 +82,6 @@ exports.getPublishedBlogs = async (req, res) => {
             where: {
                 published: true,
             },
-            include: includeCategory,
             order: [["id", "DESC"]],
         });
 
@@ -111,9 +99,7 @@ exports.getPublishedBlogs = async (req, res) => {
 
 exports.getBlogById = async (req, res) => {
     try {
-        const blog = await Blog.findByPk(req.params.id, {
-            include: includeCategory,
-        });
+        const blog = await Blog.findByPk(req.params.id);
 
         if (!blog) {
             return res.status(404).json({
@@ -140,7 +126,6 @@ exports.getBlogBySlug = async (req, res) => {
             where: {
                 slug: req.params.slug,
             },
-            include: includeCategory,
         });
 
         if (!blog) {
@@ -179,9 +164,7 @@ exports.updateBlog = async (req, res) => {
 
         await blog.update(req.body);
 
-        const updatedBlog = await Blog.findByPk(blog.id, {
-            include: includeCategory,
-        });
+        const updatedBlog = await Blog.findByPk(blog.id);
 
         return res.status(200).json({
             success: true,

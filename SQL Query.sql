@@ -46,17 +46,9 @@ CREATE TABLE assipl_enquiry (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
--- blog category table create query
-CREATE TABLE assipl_blog_categories (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL UNIQUE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
 -- blog table create query
 CREATE TABLE assipl_blogs (
     id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    category_id INT DEFAULT NULL,
     title VARCHAR(255) NOT NULL,
     slug VARCHAR(255) DEFAULT NULL UNIQUE,
     featured_image VARCHAR(255) DEFAULT NULL,
@@ -78,9 +70,7 @@ CREATE TABLE assipl_blogs (
     published TINYINT(1) DEFAULT 1,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY (id),
-    CONSTRAINT fk_assipl_blogs_category FOREIGN KEY (category_id) REFERENCES assipl_blog_categories(id) ON DELETE
-    SET NULL ON UPDATE CASCADE
+    PRIMARY KEY (id)
 );
 -- user tabele changes
 RENAME TABLE users TO assipl_users;
@@ -161,49 +151,13 @@ ALTER TABLE assipl_contact
 ADD COLUMN mobile_number VARCHAR(20) NOT NULL;
 ALTER TABLE assipl_contact
 ADD COLUMN terms_accepted TINYINT NOT NULL DEFAULT 0;
-// Created a Blog Video Hub Table CREATE TABLE assipl_blogvideo_hub (
-    id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-    category_id INT(11) DEFAULT NULL,
-    title VARCHAR(255) NOT NULL,
-    slug VARCHAR(255) UNIQUE DEFAULT NULL,
-    featured_video VARCHAR(255) DEFAULT NULL,
-    main_video VARCHAR(255) DEFAULT NULL,
-    blog_video_1 VARCHAR(255) DEFAULT NULL,
-    blog_video_2 VARCHAR(255) DEFAULT NULL,
-    description_1 LONGTEXT DEFAULT NULL,
-    description_2 LONGTEXT DEFAULT NULL,
-    description_3 LONGTEXT DEFAULT NULL,
-    meta_title VARCHAR(255) DEFAULT NULL,
-    meta_description TEXT DEFAULT NULL,
-    meta_keywords TEXT DEFAULT NULL,
-    og_title VARCHAR(255) DEFAULT NULL,
-    og_description TEXT DEFAULT NULL,
-    og_image VARCHAR(255) DEFAULT NULL,
-    image_alt_text VARCHAR(255) DEFAULT NULL,
-    robots_index ENUM('index', 'noindex') DEFAULT 'index',
-    robots_follow ENUM('follow', 'nofollow') DEFAULT 'follow',
-    published TINYINT(1) DEFAULT 1,
-    created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY (id),
-    CONSTRAINT fk_blogvideo_category FOREIGN KEY (category_id) REFERENCES assipl_blog_categories(id) ON DELETE
-    SET NULL ON UPDATE CASCADE
-);
-// name alter
-ALTER TABLE assipl_blogvideo_hub CHANGE image_alt_text video_alt_text VARCHAR(255) NULL DEFAULT NULL;
-// description field added for both blogs
-and video hub
+// description field added for blogs
 ALTER TABLE assipl_blogs
 ADD COLUMN description LONGTEXT NULL
 AFTER description_3;
-ALTER TABLE assipl_blogvideo_hub
-CHANGE image_alt_text video_alt_text VARCHAR(255) NULL DEFAULT NULL;
 
-// description field added for both blogs and video hub
+// description field added for blogs
 ALTER TABLE assipl_blogs 
-ADD COLUMN description LONGTEXT NULL AFTER description_3;
-
-ALTER TABLE assipl_blogvideo_hub 
 ADD COLUMN description LONGTEXT NULL AFTER description_3;
 
 

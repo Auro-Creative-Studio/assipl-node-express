@@ -8,15 +8,6 @@ module.exports = (sequelize, DataTypes) => {
                 primaryKey: true,
             },
 
-            category_id: {
-                type: DataTypes.INTEGER,
-                allowNull: true,
-                references: {
-                    model: "assipl_blog_categories",
-                    key: "id",
-                },
-            },
-
             title: {
                 type: DataTypes.STRING(255),
                 allowNull: false,

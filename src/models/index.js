@@ -11,9 +11,7 @@ db.Enquiry = require('./enquiry.model')(sequelize, DataTypes);
 db.User = require('./user.model')(sequelize, DataTypes);
 db.UserRole = require('./user.role.model')(sequelize, DataTypes);
 db.PasswordResetOtp = require('./password.reset.otp.model')(sequelize, DataTypes);
-db.BlogCategory = require('./blog.category.model')(sequelize, DataTypes);
 db.Blog = require('./blog.model')(sequelize, DataTypes);
-db.BlogHub = require('./blog.hub.model')(sequelize, DataTypes);
 db.NewsletterSubscriber = require('./newsletter.subscriber.model')(sequelize, DataTypes);
 
 db.User.belongsTo(db.UserRole, {
@@ -34,26 +32,6 @@ db.User.hasMany(db.PasswordResetOtp, {
 db.PasswordResetOtp.belongsTo(db.User, {
     foreignKey: "user_id",
     as: "user",
-});
-
-db.Blog.belongsTo(db.BlogCategory, {
-    foreignKey: "category_id",
-    as: "category",
-});
-
-db.BlogCategory.hasMany(db.Blog, {
-    foreignKey: "category_id",
-    as: "blogs",
-});
-
-db.BlogHub.belongsTo(db.BlogCategory, {
-    foreignKey: "category_id",
-    as: "category",
-});
-
-db.BlogCategory.hasMany(db.BlogHub, {
-    foreignKey: "category_id",
-    as: "blog_hubs",
 });
 
 module.exports = db;

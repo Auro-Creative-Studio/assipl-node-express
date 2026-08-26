@@ -3,8 +3,6 @@ const db = require('../models');
 
 const ALLOWED_TABLES = [
   'assipl_blogs',
-  'assipl_blogvideo_hub',
-  'assipl_blog_categories',
   'assipl_contact',
   'assipl_cookie_consents',
   'assipl_enquiry',
@@ -14,6 +12,38 @@ const ALLOWED_TABLES = [
   'assipl_users',
   'assipl_user_roles',
 ];
+
+const dropColumnIfExists = async (queryInterface, tableName, columnName) => {
+  try {
+    const tableDefinition = await queryInterface.describeTable(tableName);
+
+    if (!tableDefinition[columnName]) return;
+
+    const foreignKeys = await queryInterface.getForeignKeyReferencesForTable(tableName);
+    const matchingForeignKeys = foreignKeys.filter(
+      (foreignKey) =>
+        foreignKey.columnName === columnName ||
+        foreignKey.referencedTableName === 'assipl_blog_categories'
+    );
+
+    for (const foreignKey of matchingForeignKeys) {
+      if (foreignKey.constraintName) {
+        await queryInterface.removeConstraint(tableName, foreignKey.constraintName);
+      }
+    }
+
+    await queryInterface.removeColumn(tableName, columnName);
+  } catch (error) {
+    if (error?.original?.code === 'ER_NO_SUCH_TABLE') return;
+    throw error;
+  }
+};
+
+const removeBlogCategorySchema = async () => {
+  const queryInterface = sequelize.getQueryInterface();
+
+  await dropColumnIfExists(queryInterface, 'assipl_blogs', 'category_id');
+};
 
 const dropDisallowedTables = async () => {
   const [rows] = await sequelize.query(
@@ -37,6 +67,7 @@ const dropDisallowedTables = async () => {
 
 const ensureDatabaseSchema = async () => {
   await sequelize.sync();
+  await removeBlogCategorySchema();
   await dropDisallowedTables();
 };
 
