@@ -3,6 +3,7 @@ const db = require('../models');
 
 const ALLOWED_TABLES = [
   'assipl_blogs',
+  'assipl_products',
   'assipl_contact',
   'assipl_cookie_consents',
   'assipl_enquiry',

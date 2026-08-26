@@ -12,6 +12,7 @@ db.User = require('./user.model')(sequelize, DataTypes);
 db.UserRole = require('./user.role.model')(sequelize, DataTypes);
 db.PasswordResetOtp = require('./password.reset.otp.model')(sequelize, DataTypes);
 db.Blog = require('./blog.model')(sequelize, DataTypes);
+db.Product = require('./product.model')(sequelize, DataTypes);
 db.NewsletterSubscriber = require('./newsletter.subscriber.model')(sequelize, DataTypes);
 
 db.User.belongsTo(db.UserRole, {
