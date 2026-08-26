@@ -828,3 +828,68 @@ CREATE TABLE assipl_single_services_models (
     INDEX idx_service_models_service_id (service_id),
     INDEX idx_service_models_sort_order (sort_order)
 );
+
+CREATE TABLE assipl_enquire_form (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    name VARCHAR(255) NOT NULL,
+    company_name VARCHAR(255) DEFAULT NULL,
+    email VARCHAR(255) NOT NULL,
+    contact_number VARCHAR(50) NOT NULL,
+    message TEXT DEFAULT NULL,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE assipl_contact_form (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    full_name VARCHAR(255) NOT NULL,
+    phone_number VARCHAR(50) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    subject VARCHAR(255) DEFAULT NULL,
+    message TEXT DEFAULT NULL,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE assipl_career_positions (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    position_name VARCHAR(255) NOT NULL,
+    sort_order INT NOT NULL DEFAULT 0,
+    status TINYINT(1) NOT NULL DEFAULT 1,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE assipl_career_form (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    full_name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    phone_number VARCHAR(50) NOT NULL,
+
+    position_id INT UNSIGNED NOT NULL,
+
+    message TEXT DEFAULT NULL,
+    upload_resume VARCHAR(500) DEFAULT NULL,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_career_form_position
+        FOREIGN KEY (position_id)
+        REFERENCES assipl_career_positions(id)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE,
+
+    INDEX idx_career_position_id (position_id)
+);

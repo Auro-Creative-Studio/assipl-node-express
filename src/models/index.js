@@ -17,6 +17,10 @@ db.NewsletterSubscriber = require('./newsletter.subscriber.model')(sequelize, Da
 db.SingleService = require('./single.service.model')(sequelize, DataTypes);
 db.SingleServiceAdvantage = require('./single.service.advantage.model')(sequelize, DataTypes);
 db.ServiceModel = require('./service.model.model')(sequelize, DataTypes);
+db.EnquireForm = require('./enquire.form.model')(sequelize, DataTypes);
+db.ContactFormEntry = require('./contact.form.entry.model')(sequelize, DataTypes);
+db.CareerPosition = require('./career.position.model')(sequelize, DataTypes);
+db.CareerForm = require('./career.form.model')(sequelize, DataTypes);
 
 db.User.belongsTo(db.UserRole, {
     foreignKey: "role_id",
@@ -58,6 +62,16 @@ db.SingleService.hasMany(db.ServiceModel, {
 db.ServiceModel.belongsTo(db.SingleService, {
     foreignKey: "service_id",
     as: "service",
+});
+
+db.CareerPosition.hasMany(db.CareerForm, {
+    foreignKey: "position_id",
+    as: "applications",
+});
+
+db.CareerForm.belongsTo(db.CareerPosition, {
+    foreignKey: "position_id",
+    as: "position",
 });
 
 module.exports = db;
