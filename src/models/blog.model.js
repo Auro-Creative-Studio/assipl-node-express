@@ -19,44 +19,45 @@ module.exports = (sequelize, DataTypes) => {
                 unique: true,
             },
 
-            featured_image: {
-                type: DataTypes.STRING(255),
-                allowNull: true,
-            },
-
-            main_image: {
-                type: DataTypes.STRING(255),
-                allowNull: true,
-            },
-
-            blog_image_1: {
-                type: DataTypes.STRING(255),
-                allowNull: true,
-            },
-
-            blog_image_2: {
-                type: DataTypes.STRING(255),
-                allowNull: true,
-            },
-
-            description_1: {
-                type: DataTypes.TEXT("long"),
-                allowNull: true,
-            },
-
-            description_2: {
-                type: DataTypes.TEXT("long"),
-                allowNull: true,
-            },
-
-            description_3: {
-                type: DataTypes.TEXT("long"),
+            excerpt: {
+                type: DataTypes.STRING(500),
                 allowNull: true,
             },
 
             description: {
                 type: DataTypes.TEXT("long"),
                 allowNull: true,
+            },
+
+            featured_image: {
+                type: DataTypes.STRING(255),
+                allowNull: true,
+            },
+
+            hero_image: {
+                type: DataTypes.STRING(255),
+                allowNull: true,
+            },
+
+            content_blocks: {
+                type: DataTypes.TEXT("long"),
+                allowNull: true,
+                defaultValue: "[]",
+                get() {
+                    const raw = this.getDataValue("content_blocks");
+
+                    if (!raw) return [];
+                    if (typeof raw !== "string") return raw;
+
+                    try {
+                        return JSON.parse(raw);
+                    } catch {
+                        return [];
+                    }
+                },
+                set(value) {
+                    this.setDataValue("content_blocks", JSON.stringify(value ?? []));
+                },
             },
 
             meta_title: {

@@ -45,6 +45,23 @@ const removeBlogCategorySchema = async () => {
   await dropColumnIfExists(queryInterface, 'assipl_blogs', 'category_id');
 };
 
+const LEGACY_BLOG_COLUMNS = [
+  'main_image',
+  'blog_image_1',
+  'blog_image_2',
+  'description_1',
+  'description_2',
+  'description_3',
+];
+
+const removeLegacyBlogColumns = async () => {
+  const queryInterface = sequelize.getQueryInterface();
+
+  for (const columnName of LEGACY_BLOG_COLUMNS) {
+    await dropColumnIfExists(queryInterface, 'assipl_blogs', columnName);
+  }
+};
+
 const dropDisallowedTables = async () => {
   const [rows] = await sequelize.query(
     `SELECT TABLE_NAME AS tableName FROM INFORMATION_SCHEMA.TABLES
@@ -66,8 +83,9 @@ const dropDisallowedTables = async () => {
 };
 
 const ensureDatabaseSchema = async () => {
-  await sequelize.sync();
+  await sequelize.sync({ alter: true });
   await removeBlogCategorySchema();
+  await removeLegacyBlogColumns();
   await dropDisallowedTables();
 };
 
