@@ -11,6 +11,9 @@ const productRoutes = require('./routes/product.routes');
 const newsletterSubscriberRoutes = require('./routes/newsletter.subscriber.routes');
 const userRoutes = require('./routes/user.routes');
 const uploadRoutes = require('./routes/upload.routes');
+const singleServiceRoutes = require('./routes/single.service.routes');
+const singleServiceAdvantageRoutes = require('./routes/single.service.advantage.routes');
+const serviceModelRoutes = require('./routes/service.model.routes');
 const app = express();
 
 app.use(cors());
@@ -26,5 +29,8 @@ app.use('/api/products', productRoutes);
 app.use('/api/newsletter-subscribers', newsletterSubscriberRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/uploads', uploadRoutes);
+app.use('/api/single-services', singleServiceRoutes);
+app.use('/api/single-service-advantages', singleServiceAdvantageRoutes);
+app.use('/api/service-models', serviceModelRoutes);
 module.exports = app;
 

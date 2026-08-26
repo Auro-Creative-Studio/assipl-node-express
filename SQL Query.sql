@@ -741,3 +741,90 @@ CREATE TABLE IF NOT EXISTS assipl_newsletter_subscribers (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+
+
+CREATE TABLE assipl_single_service (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    title VARCHAR(255) NOT NULL,
+    slug VARCHAR(255) NOT NULL UNIQUE,
+
+    banner_title VARCHAR(255) DEFAULT NULL,
+    banner_image VARCHAR(500) DEFAULT NULL,
+    breadcrumb_title VARCHAR(255) DEFAULT NULL,
+
+    featured_image VARCHAR(500) DEFAULT NULL,
+
+    overview_title VARCHAR(255) DEFAULT NULL,
+    overview_description LONGTEXT DEFAULT NULL,
+
+    service_advantages_title VARCHAR(255) DEFAULT NULL,
+    service_advantages_description TEXT DEFAULT NULL,
+
+    service_models_title VARCHAR(255) DEFAULT NULL,
+    service_models_description TEXT DEFAULT NULL,
+
+    cta_title VARCHAR(255) DEFAULT NULL,
+    cta_description TEXT DEFAULT NULL,
+    cta_image VARCHAR(500) DEFAULT NULL,
+
+    status TINYINT(1) NOT NULL DEFAULT 1,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP,
+
+    INDEX idx_single_service_slug (slug),
+    INDEX idx_single_service_status (status)
+);
+
+CREATE TABLE assipl_single_service_advantages (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    service_id INT UNSIGNED NOT NULL,
+
+    title VARCHAR(255) NOT NULL,
+    description TEXT DEFAULT NULL,
+    sort_order INT NOT NULL DEFAULT 0,
+
+    status TINYINT(1) NOT NULL DEFAULT 1,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_service_advantages_service
+        FOREIGN KEY (service_id)
+        REFERENCES assipl_single_service(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    INDEX idx_service_advantages_service_id (service_id),
+    INDEX idx_service_advantages_sort_order (sort_order)
+);
+
+CREATE TABLE assipl_single_services_models (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    service_id INT UNSIGNED NOT NULL,
+
+    title VARCHAR(255) NOT NULL,
+    image VARCHAR(500) DEFAULT NULL,
+    description LONGTEXT DEFAULT NULL,
+    sort_order INT NOT NULL DEFAULT 0,
+
+    status TINYINT(1) NOT NULL DEFAULT 1,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_service_models_service
+        FOREIGN KEY (service_id)
+        REFERENCES assipl_single_service(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    INDEX idx_service_models_service_id (service_id),
+    INDEX idx_service_models_sort_order (sort_order)
+);

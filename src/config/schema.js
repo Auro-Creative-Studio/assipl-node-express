@@ -12,6 +12,9 @@ const ALLOWED_TABLES = [
   'assipl_seo',
   'assipl_users',
   'assipl_user_roles',
+  'assipl_single_service',
+  'assipl_single_service_advantages',
+  'assipl_single_services_models',
 ];
 
 const dropColumnIfExists = async (queryInterface, tableName, columnName) => {

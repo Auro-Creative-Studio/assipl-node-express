@@ -14,6 +14,9 @@ db.PasswordResetOtp = require('./password.reset.otp.model')(sequelize, DataTypes
 db.Blog = require('./blog.model')(sequelize, DataTypes);
 db.Product = require('./product.model')(sequelize, DataTypes);
 db.NewsletterSubscriber = require('./newsletter.subscriber.model')(sequelize, DataTypes);
+db.SingleService = require('./single.service.model')(sequelize, DataTypes);
+db.SingleServiceAdvantage = require('./single.service.advantage.model')(sequelize, DataTypes);
+db.ServiceModel = require('./service.model.model')(sequelize, DataTypes);
 
 db.User.belongsTo(db.UserRole, {
     foreignKey: "role_id",
@@ -33,6 +36,28 @@ db.User.hasMany(db.PasswordResetOtp, {
 db.PasswordResetOtp.belongsTo(db.User, {
     foreignKey: "user_id",
     as: "user",
+});
+
+db.SingleService.hasMany(db.SingleServiceAdvantage, {
+    foreignKey: "service_id",
+    as: "advantages",
+    onDelete: "CASCADE",
+});
+
+db.SingleServiceAdvantage.belongsTo(db.SingleService, {
+    foreignKey: "service_id",
+    as: "service",
+});
+
+db.SingleService.hasMany(db.ServiceModel, {
+    foreignKey: "service_id",
+    as: "models",
+    onDelete: "CASCADE",
+});
+
+db.ServiceModel.belongsTo(db.SingleService, {
+    foreignKey: "service_id",
+    as: "service",
 });
 
 module.exports = db;
