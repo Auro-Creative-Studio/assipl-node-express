@@ -6,6 +6,10 @@ const uploadPath = path.join(__dirname, "../../uploads");
 const IMAGE_EXTENSIONS = [".jpg", ".jpeg", ".png", ".webp", ".gif", ".svg"];
 const VIDEO_EXTENSIONS = [".mp4", ".webm"];
 
+const RESUME_MAX_SIZE = 5 * 1024 * 1024;
+
+const exceedsResumeLimit = (file) => file.mimetype === "application/pdf" && file.size > RESUME_MAX_SIZE;
+
 const getFileType = (extension) => {
     if (IMAGE_EXTENSIONS.includes(extension)) return "image";
     if (VIDEO_EXTENSIONS.includes(extension)) return "video";
@@ -53,6 +57,11 @@ const createUpload = (req, res) => {
         return res.status(400).json({ success: false, message: "No file was uploaded." });
     }
 
+    if (exceedsResumeLimit(req.file)) {
+        fs.unlinkSync(req.file.path);
+        return res.status(400).json({ success: false, message: "Resume file must not exceed 5MB." });
+    }
+
     const fileInfo = buildFileInfo(req.file.filename);
     fileInfo.original_name = req.file.originalname;
 
@@ -66,6 +75,11 @@ const replaceUpload = (req, res) => {
                 success: false,
                 message: "No replacement file was uploaded.",
             });
+        }
+
+        if (exceedsResumeLimit(req.file)) {
+            fs.unlinkSync(req.file.path);
+            return res.status(400).json({ success: false, message: "Resume file must not exceed 5MB." });
         }
 
         const existingFilename = path.basename(req.params.filename);
