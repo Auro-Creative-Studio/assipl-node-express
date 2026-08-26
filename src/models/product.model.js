@@ -45,6 +45,11 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: true,
             },
 
+            heading: {
+                type: DataTypes.STRING(255),
+                allowNull: true,
+            },
+
             front_image: {
                 type: DataTypes.STRING(255),
                 allowNull: true,
