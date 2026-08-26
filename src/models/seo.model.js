@@ -65,7 +65,7 @@ module.exports = (sequelize, DataTypes) => {
             },
         },
         {
-            tableName: "royal4_seo",
+            tableName: "assipl_seo",
 
             timestamps: true,
 

@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
             },
         },
         {
-            tableName: "royal4_blog_categories",
+            tableName: "assipl_blog_categories",
             timestamps: true,
             createdAt: "created_at",
             updatedAt: "updated_at",

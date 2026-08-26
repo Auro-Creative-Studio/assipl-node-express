@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-    const Blog = sequelize.define(
-        "Blog",
+    const BlogHub = sequelize.define(
+        "BlogHub",
         {
             id: {
                 type: DataTypes.BIGINT.UNSIGNED,
@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.INTEGER,
                 allowNull: true,
                 references: {
-                    model: "royal4_blog_categories",
+                    model: "assipl_blog_categories",
                     key: "id",
                 },
             },
@@ -119,12 +119,12 @@ module.exports = (sequelize, DataTypes) => {
             },
         },
         {
-            tableName: "royal4_blogvideo_hub",
+            tableName: "assipl_blogvideo_hub",
             timestamps: true,
             createdAt: "created_at",
             updatedAt: "updated_at",
         }
     );
 
-    return Blog;
+    return BlogHub;
 };

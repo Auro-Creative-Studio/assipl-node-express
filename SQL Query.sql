@@ -1,4 +1,4 @@
-CREATE TABLE royal4_seo (
+CREATE TABLE assipl_seo (
     id INT(11) NOT NULL AUTO_INCREMENT,
     page_type VARCHAR(100) NOT NULL UNIQUE,
     meta_title VARCHAR(255) NOT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE royal4_seo (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
 );
-CREATE TABLE royal4_cookie_consents (
+CREATE TABLE assipl_cookie_consents (
     id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
     ip_address VARCHAR(45) NULL,
     consent_type VARCHAR(50) NULL,
@@ -25,7 +25,7 @@ CREATE TABLE royal4_cookie_consents (
     PRIMARY KEY (id)
 );
 --  contact table create query
-CREATE TABLE royal4_contact (
+CREATE TABLE assipl_contact (
     id INT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE royal4_contact (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
-CREATE TABLE royal4_enquiry (
+CREATE TABLE assipl_enquiry (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(150) NOT NULL,
     mobile_number VARCHAR(20) NOT NULL,
@@ -47,14 +47,14 @@ CREATE TABLE royal4_enquiry (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 -- blog category table create query
-CREATE TABLE royal4_blog_categories (
+CREATE TABLE assipl_blog_categories (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL UNIQUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 -- blog table create query
-CREATE TABLE royal4_blogs (
+CREATE TABLE assipl_blogs (
     id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     category_id INT DEFAULT NULL,
     title VARCHAR(255) NOT NULL,
@@ -79,16 +79,16 @@ CREATE TABLE royal4_blogs (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    CONSTRAINT fk_royal4_blogs_category FOREIGN KEY (category_id) REFERENCES royal4_blog_categories(id) ON DELETE
+    CONSTRAINT fk_assipl_blogs_category FOREIGN KEY (category_id) REFERENCES assipl_blog_categories(id) ON DELETE
     SET NULL ON UPDATE CASCADE
 );
 -- user tabele changes
-RENAME TABLE users TO royal4_users;
-ALTER TABLE royal4_users
+RENAME TABLE users TO assipl_users;
+ALTER TABLE assipl_users
 ADD COLUMN password VARCHAR(255) NOT NULL
 AFTER email;
 -- cookie table alter query
-ALTER TABLE royal4_cookie_consents
+ALTER TABLE assipl_cookie_consents
 ADD COLUMN session_id VARCHAR(255) NOT NULL
 AFTER id,
     ADD COLUMN country VARCHAR(255) NULL
@@ -106,7 +106,7 @@ AFTER device,
     ADD COLUMN timezone VARCHAR(255) NULL
 AFTER language;
 -- CREATE USER ROLES TABLE
-CREATE TABLE royal4_user_roles (
+CREATE TABLE assipl_user_roles (
     id INT(11) NOT NULL AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     description VARCHAR(255) DEFAULT NULL,
@@ -116,7 +116,7 @@ CREATE TABLE royal4_user_roles (
     PRIMARY KEY (id)
 );
 -- INSERT DEFAULT ROLES
-INSERT INTO royal4_user_roles (name, description, type)
+INSERT INTO assipl_user_roles (name, description, type)
 VALUES ('Admin', 'System Administrator', 'admin'),
     (
         'Super Admin',
@@ -125,17 +125,17 @@ VALUES ('Admin', 'System Administrator', 'admin'),
     ),
     ('Editor', 'Content Management Access', 'editor');
 -- ADD ROLE ID COLUMN TO USERS TABLE
-ALTER TABLE royal4_users
+ALTER TABLE assipl_users
 ADD COLUMN role_id INT(11) DEFAULT NULL
 AFTER password;
 -- CREATE FOREIGN KEY RELATION
-ALTER TABLE royal4_users
-ADD CONSTRAINT fk_royal4_users_role FOREIGN KEY (role_id) REFERENCES royal4_user_roles(id) ON DELETE
+ALTER TABLE assipl_users
+ADD CONSTRAINT fk_assipl_users_role FOREIGN KEY (role_id) REFERENCES assipl_user_roles(id) ON DELETE
 SET NULL ON UPDATE CASCADE;
 -- REMOVE OLD NAME COLUMN
-ALTER TABLE royal4_users DROP COLUMN name;
+ALTER TABLE assipl_users DROP COLUMN name;
 -- ADD FIRST NAME, LAST NAME, PHONE NUMBER
-ALTER TABLE royal4_users
+ALTER TABLE assipl_users
 ADD COLUMN first_name VARCHAR(255) NULL
 AFTER id,
     ADD COLUMN last_name VARCHAR(255) NULL
@@ -143,7 +143,7 @@ AFTER first_name,
     ADD COLUMN phone_number VARCHAR(20) NULL
 AFTER email;
 -- CREATE PASSWORD RESET OTP TABLE
-CREATE TABLE royal4_password_reset_otps (
+CREATE TABLE assipl_password_reset_otps (
     id INT(11) NOT NULL AUTO_INCREMENT,
     user_id INT(11) NOT NULL,
     otp_hash VARCHAR(255) NOT NULL,
@@ -153,15 +153,15 @@ CREATE TABLE royal4_password_reset_otps (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    INDEX idx_royal4_password_reset_otps_user_purpose (user_id, purpose),
-    CONSTRAINT fk_royal4_password_reset_otps_user FOREIGN KEY (user_id) REFERENCES royal4_users(id) ON DELETE CASCADE ON UPDATE CASCADE
+    INDEX idx_assipl_password_reset_otps_user_purpose (user_id, purpose),
+    CONSTRAINT fk_assipl_password_reset_otps_user FOREIGN KEY (user_id) REFERENCES assipl_users(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 -- contact form modification 
-ALTER TABLE royal4_contact
+ALTER TABLE assipl_contact
 ADD COLUMN mobile_number VARCHAR(20) NOT NULL;
-ALTER TABLE royal4_contact
+ALTER TABLE assipl_contact
 ADD COLUMN terms_accepted TINYINT NOT NULL DEFAULT 0;
-// Created a Blog Video Hub Table CREATE TABLE royal4_blogvideo_hub (
+// Created a Blog Video Hub Table CREATE TABLE assipl_blogvideo_hub (
     id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
     category_id INT(11) DEFAULT NULL,
     title VARCHAR(255) NOT NULL,
@@ -186,28 +186,28 @@ ADD COLUMN terms_accepted TINYINT NOT NULL DEFAULT 0;
     created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    CONSTRAINT fk_blogvideo_category FOREIGN KEY (category_id) REFERENCES royal4_blog_categories(id) ON DELETE
+    CONSTRAINT fk_blogvideo_category FOREIGN KEY (category_id) REFERENCES assipl_blog_categories(id) ON DELETE
     SET NULL ON UPDATE CASCADE
 );
 // name alter
-ALTER TABLE royal4_blogvideo_hub CHANGE image_alt_text video_alt_text VARCHAR(255) NULL DEFAULT NULL;
+ALTER TABLE assipl_blogvideo_hub CHANGE image_alt_text video_alt_text VARCHAR(255) NULL DEFAULT NULL;
 // description field added for both blogs
 and video hub
-ALTER TABLE royal4_blogs
+ALTER TABLE assipl_blogs
 ADD COLUMN description LONGTEXT NULL
 AFTER description_3;
-ALTER TABLE royal4_blogvideo_hub
+ALTER TABLE assipl_blogvideo_hub
 CHANGE image_alt_text video_alt_text VARCHAR(255) NULL DEFAULT NULL;
 
 // description field added for both blogs and video hub
-ALTER TABLE royal4_blogs 
+ALTER TABLE assipl_blogs 
 ADD COLUMN description LONGTEXT NULL AFTER description_3;
 
-ALTER TABLE royal4_blogvideo_hub 
+ALTER TABLE assipl_blogvideo_hub 
 ADD COLUMN description LONGTEXT NULL AFTER description_3;
 
 
-CREATE TABLE royal4_home_pages (
+CREATE TABLE assipl_home_pages (
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     service_heading VARCHAR(255),
     service_subheading TEXT,
@@ -216,7 +216,7 @@ CREATE TABLE royal4_home_pages (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE royal4_home_partners (
+CREATE TABLE assipl_home_partners (
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     home_page_id BIGINT UNSIGNED NOT NULL,
     logo VARCHAR(500) NOT NULL,
@@ -224,7 +224,7 @@ CREATE TABLE royal4_home_partners (
     FOREIGN KEY (home_page_id) REFERENCES home_pages(id) ON DELETE CASCADE
 );
 
-CREATE TABLE royal4_home_services (
+CREATE TABLE assipl_home_services (
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     home_page_id BIGINT UNSIGNED NOT NULL,
     service_image VARCHAR(500),
@@ -234,7 +234,7 @@ CREATE TABLE royal4_home_services (
     FOREIGN KEY (home_page_id) REFERENCES home_pages(id) ON DELETE CASCADE
 );
 
-CREATE TABLE royal4_home_why_us (
+CREATE TABLE assipl_home_why_us (
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     home_page_id BIGINT UNSIGNED NOT NULL,
     whyus_title VARCHAR(255),
@@ -246,7 +246,7 @@ CREATE TABLE royal4_home_why_us (
     FOREIGN KEY (home_page_id) REFERENCES home_pages(id) ON DELETE CASCADE
 );
 
-CREATE TABLE royal4_home_strategic_media_logos (
+CREATE TABLE assipl_home_strategic_media_logos (
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     home_page_id BIGINT UNSIGNED NOT NULL,
     logo VARCHAR(500) NOT NULL,
@@ -254,7 +254,7 @@ CREATE TABLE royal4_home_strategic_media_logos (
     FOREIGN KEY (home_page_id) REFERENCES home_pages(id) ON DELETE CASCADE
 );
 
-CREATE TABLE royal4_home_growth_items (
+CREATE TABLE assipl_home_growth_items (
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     home_page_id BIGINT UNSIGNED NOT NULL,
     growth_image VARCHAR(500),
@@ -264,7 +264,7 @@ CREATE TABLE royal4_home_growth_items (
     FOREIGN KEY (home_page_id) REFERENCES home_pages(id) ON DELETE CASCADE
 );
 
-CREATE TABLE royal4_home_testimonials (
+CREATE TABLE assipl_home_testimonials (
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     home_page_id BIGINT UNSIGNED NOT NULL,
     testimonial_image VARCHAR(500),
@@ -276,7 +276,7 @@ CREATE TABLE royal4_home_testimonials (
     display_order INT DEFAULT 0,
     FOREIGN KEY (home_page_id) REFERENCES home_pages(id) ON DELETE CASCADE
 );
-CREATE TABLE royal4_services_categories (
+CREATE TABLE assipl_services_categories (
     id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     category_title VARCHAR(255) NOT NULL,
     slug VARCHAR(255) NOT NULL,
@@ -290,9 +290,9 @@ CREATE TABLE royal4_services_categories (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    UNIQUE KEY uk_royal4_services_categories_slug (slug)
+    UNIQUE KEY uk_assipl_services_categories_slug (slug)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
-CREATE TABLE royal4_services_sub_categories (
+CREATE TABLE assipl_services_sub_categories (
     id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     category_id BIGINT UNSIGNED NOT NULL,
     sub_category_title VARCHAR(255) NOT NULL,
@@ -304,11 +304,11 @@ CREATE TABLE royal4_services_sub_categories (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    UNIQUE KEY uk_royal4_services_sub_categories_slug (slug),
-    KEY idx_royal4_services_sub_categories_category_id (category_id),
-    CONSTRAINT fk_royal4_sub_categories_category FOREIGN KEY (category_id) REFERENCES royal4_services_categories(id) ON DELETE CASCADE ON UPDATE CASCADE
+    UNIQUE KEY uk_assipl_services_sub_categories_slug (slug),
+    KEY idx_assipl_services_sub_categories_category_id (category_id),
+    CONSTRAINT fk_assipl_sub_categories_category FOREIGN KEY (category_id) REFERENCES assipl_services_categories(id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
-CREATE TABLE royal4_services (
+CREATE TABLE assipl_services (
     id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     category_id BIGINT UNSIGNED NOT NULL,
     sub_category_id BIGINT UNSIGNED NOT NULL,
@@ -335,13 +335,13 @@ CREATE TABLE royal4_services (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    UNIQUE KEY uk_royal4_services_slug (slug),
-    KEY idx_royal4_services_category_id (category_id),
-    KEY idx_royal4_services_sub_category_id (sub_category_id),
-    CONSTRAINT fk_royal4_services_category FOREIGN KEY (category_id) REFERENCES royal4_services_categories(id) ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT fk_royal4_services_sub_category FOREIGN KEY (sub_category_id) REFERENCES royal4_services_sub_categories(id) ON DELETE CASCADE ON UPDATE CASCADE
+    UNIQUE KEY uk_assipl_services_slug (slug),
+    KEY idx_assipl_services_category_id (category_id),
+    KEY idx_assipl_services_sub_category_id (sub_category_id),
+    CONSTRAINT fk_assipl_services_category FOREIGN KEY (category_id) REFERENCES assipl_services_categories(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_assipl_services_sub_category FOREIGN KEY (sub_category_id) REFERENCES assipl_services_sub_categories(id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
-CREATE TABLE royal4_services_benefits (
+CREATE TABLE assipl_services_benefits (
     id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     service_id BIGINT UNSIGNED NOT NULL,
     title VARCHAR(255) NOT NULL,
@@ -352,10 +352,10 @@ CREATE TABLE royal4_services_benefits (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    KEY idx_royal4_services_benefits_service_id (service_id),
-    CONSTRAINT fk_royal4_services_benefits_service FOREIGN KEY (service_id) REFERENCES royal4_services(id) ON DELETE CASCADE ON UPDATE CASCADE
+    KEY idx_assipl_services_benefits_service_id (service_id),
+    CONSTRAINT fk_assipl_services_benefits_service FOREIGN KEY (service_id) REFERENCES assipl_services(id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
-CREATE TABLE royal4_services_inclusions (
+CREATE TABLE assipl_services_inclusions (
     id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     service_id BIGINT UNSIGNED NOT NULL,
     title VARCHAR(255) NOT NULL,
@@ -365,10 +365,10 @@ CREATE TABLE royal4_services_inclusions (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    KEY idx_royal4_services_inclusions_service_id (service_id),
-    CONSTRAINT fk_royal4_services_inclusions_service FOREIGN KEY (service_id) REFERENCES royal4_services(id) ON DELETE CASCADE ON UPDATE CASCADE
+    KEY idx_assipl_services_inclusions_service_id (service_id),
+    CONSTRAINT fk_assipl_services_inclusions_service FOREIGN KEY (service_id) REFERENCES assipl_services(id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
-CREATE TABLE royal4_services_approach (
+CREATE TABLE assipl_services_approach (
     id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     service_id BIGINT UNSIGNED NOT NULL,
     featured_title VARCHAR(255) NOT NULL,
@@ -378,30 +378,30 @@ CREATE TABLE royal4_services_approach (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    KEY idx_royal4_services_approach_service_id (service_id),
-    CONSTRAINT fk_royal4_services_approach_service FOREIGN KEY (service_id) REFERENCES royal4_services(id) ON DELETE CASCADE ON UPDATE CASCADE
+    KEY idx_assipl_services_approach_service_id (service_id),
+    CONSTRAINT fk_assipl_services_approach_service FOREIGN KEY (service_id) REFERENCES assipl_services(id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
-ALTER TABLE royal4_services
+ALTER TABLE assipl_services
 ADD COLUMN service_benefits_id BIGINT UNSIGNED NULL
 AFTER what_we_do_secondary_card_description,
     ADD COLUMN service_inclusion_id BIGINT UNSIGNED NULL
 AFTER service_benefits_id,
     ADD COLUMN service_approach_id BIGINT UNSIGNED NULL
 AFTER service_inclusion_id;
-ALTER TABLE royal4_services
-ADD INDEX idx_royal4_services_benefits_id (service_benefits_id),
-    ADD INDEX idx_royal4_services_inclusion_id (service_inclusion_id),
-    ADD INDEX idx_royal4_services_approach_id (service_approach_id);
-ALTER TABLE royal4_services
-ADD CONSTRAINT fk_royal4_services_benefits_id FOREIGN KEY (service_benefits_id) REFERENCES royal4_services_benefits(id) ON DELETE
+ALTER TABLE assipl_services
+ADD INDEX idx_assipl_services_benefits_id (service_benefits_id),
+    ADD INDEX idx_assipl_services_inclusion_id (service_inclusion_id),
+    ADD INDEX idx_assipl_services_approach_id (service_approach_id);
+ALTER TABLE assipl_services
+ADD CONSTRAINT fk_assipl_services_benefits_id FOREIGN KEY (service_benefits_id) REFERENCES assipl_services_benefits(id) ON DELETE
 SET NULL ON UPDATE CASCADE;
-ALTER TABLE royal4_services
-ADD CONSTRAINT fk_royal4_services_inclusion_id FOREIGN KEY (service_inclusion_id) REFERENCES royal4_services_inclusions(id) ON DELETE
+ALTER TABLE assipl_services
+ADD CONSTRAINT fk_assipl_services_inclusion_id FOREIGN KEY (service_inclusion_id) REFERENCES assipl_services_inclusions(id) ON DELETE
 SET NULL ON UPDATE CASCADE;
-ALTER TABLE royal4_services
-ADD CONSTRAINT fk_royal4_services_approach_id FOREIGN KEY (service_approach_id) REFERENCES royal4_services_approach(id) ON DELETE
+ALTER TABLE assipl_services
+ADD CONSTRAINT fk_assipl_services_approach_id FOREIGN KEY (service_approach_id) REFERENCES assipl_services_approach(id) ON DELETE
 SET NULL ON UPDATE CASCADE;
-CREATE TABLE royal4_case_study_category (
+CREATE TABLE assipl_case_study_category (
     id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     image VARCHAR(500) DEFAULT NULL,
     case_study_title VARCHAR(255) NOT NULL,
@@ -413,7 +413,7 @@ CREATE TABLE royal4_case_study_category (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
-CREATE TABLE royal4_case_study (
+CREATE TABLE assipl_case_study (
     id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     category_id BIGINT UNSIGNED NOT NULL,
     image VARCHAR(500) DEFAULT NULL,
@@ -442,11 +442,11 @@ CREATE TABLE royal4_case_study (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    UNIQUE KEY royal4_case_study_slug_unique (slug),
-    KEY royal4_case_study_category_id_index (category_id),
-    CONSTRAINT royal4_case_study_category_fk FOREIGN KEY (category_id) REFERENCES royal4_case_study_category (id) ON UPDATE CASCADE ON DELETE CASCADE
+    UNIQUE KEY assipl_case_study_slug_unique (slug),
+    KEY assipl_case_study_category_id_index (category_id),
+    CONSTRAINT assipl_case_study_category_fk FOREIGN KEY (category_id) REFERENCES assipl_case_study_category (id) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
-CREATE TABLE royal4_case_study_items (
+CREATE TABLE assipl_case_study_items (
     id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     case_study_id BIGINT UNSIGNED NOT NULL,
     title VARCHAR(255) NOT NULL,
@@ -455,10 +455,10 @@ CREATE TABLE royal4_case_study_items (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    KEY royal4_case_study_items_case_study_id_index (case_study_id),
-    CONSTRAINT royal4_case_study_items_case_study_fk FOREIGN KEY (case_study_id) REFERENCES royal4_case_study (id) ON UPDATE CASCADE ON DELETE CASCADE
+    KEY assipl_case_study_items_case_study_id_index (case_study_id),
+    CONSTRAINT assipl_case_study_items_case_study_fk FOREIGN KEY (case_study_id) REFERENCES assipl_case_study (id) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
-CREATE TABLE royal4_case_study_overview (
+CREATE TABLE assipl_case_study_overview (
     id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     case_study_id BIGINT UNSIGNED NOT NULL,
     icon VARCHAR(255) DEFAULT NULL,
@@ -467,10 +467,10 @@ CREATE TABLE royal4_case_study_overview (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    KEY royal4_case_study_overview_case_study_id_index (case_study_id),
-    CONSTRAINT royal4_case_study_overview_case_study_fk FOREIGN KEY (case_study_id) REFERENCES royal4_case_study (id) ON UPDATE CASCADE ON DELETE CASCADE
+    KEY assipl_case_study_overview_case_study_id_index (case_study_id),
+    CONSTRAINT assipl_case_study_overview_case_study_fk FOREIGN KEY (case_study_id) REFERENCES assipl_case_study (id) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
-CREATE TABLE royal4_case_study_strategy (
+CREATE TABLE assipl_case_study_strategy (
     id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     case_study_id BIGINT UNSIGNED NOT NULL,
     title VARCHAR(255) NOT NULL,
@@ -480,10 +480,10 @@ CREATE TABLE royal4_case_study_strategy (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    KEY royal4_case_study_strategy_case_study_id_index (case_study_id),
-    CONSTRAINT royal4_case_study_strategy_case_study_fk FOREIGN KEY (case_study_id) REFERENCES royal4_case_study (id) ON UPDATE CASCADE ON DELETE CASCADE
+    KEY assipl_case_study_strategy_case_study_id_index (case_study_id),
+    CONSTRAINT assipl_case_study_strategy_case_study_fk FOREIGN KEY (case_study_id) REFERENCES assipl_case_study (id) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
-CREATE TABLE royal4_case_study_what_we_build (
+CREATE TABLE assipl_case_study_what_we_build (
     id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     case_study_id BIGINT UNSIGNED NOT NULL,
     title VARCHAR(255) NOT NULL,
@@ -492,10 +492,10 @@ CREATE TABLE royal4_case_study_what_we_build (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    KEY royal4_case_study_build_case_study_id_index (case_study_id),
-    CONSTRAINT royal4_case_study_build_case_study_fk FOREIGN KEY (case_study_id) REFERENCES royal4_case_study (id) ON UPDATE CASCADE ON DELETE CASCADE
+    KEY assipl_case_study_build_case_study_id_index (case_study_id),
+    CONSTRAINT assipl_case_study_build_case_study_fk FOREIGN KEY (case_study_id) REFERENCES assipl_case_study (id) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
-CREATE TABLE royal4_case_study_impact (
+CREATE TABLE assipl_case_study_impact (
     id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     case_study_id BIGINT UNSIGNED NOT NULL,
     title VARCHAR(255) NOT NULL,
@@ -504,13 +504,13 @@ CREATE TABLE royal4_case_study_impact (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    KEY royal4_case_study_impact_case_study_id_index (case_study_id),
-    CONSTRAINT royal4_case_study_impact_case_study_fk FOREIGN KEY (case_study_id) REFERENCES royal4_case_study (id) ON UPDATE CASCADE ON DELETE CASCADE
+    KEY assipl_case_study_impact_case_study_id_index (case_study_id),
+    CONSTRAINT assipl_case_study_impact_case_study_fk FOREIGN KEY (case_study_id) REFERENCES assipl_case_study (id) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
-ALTER TABLE royal4_case_study
+ALTER TABLE assipl_case_study
 ADD COLUMN challenge_image VARCHAR(255) NULL,
     ADD COLUMN what_we_built_image VARCHAR(255) NULL;
-CREATE TABLE royal4_ai_capabilities (
+CREATE TABLE assipl_ai_capabilities (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     hero_image_bg VARCHAR(255) DEFAULT NULL,
     hero_title VARCHAR(255) NOT NULL,
@@ -529,7 +529,7 @@ CREATE TABLE royal4_ai_capabilities (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
-CREATE TABLE royal4_ai_capabilities_four_functions (
+CREATE TABLE assipl_ai_capabilities_four_functions (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     ai_capability_id INT UNSIGNED NOT NULL,
     four_functions_icon VARCHAR(255) DEFAULT NULL,
@@ -543,9 +543,9 @@ CREATE TABLE royal4_ai_capabilities_four_functions (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     INDEX idx_ai_functions_capability_id (ai_capability_id),
-    CONSTRAINT fk_ai_functions_capability FOREIGN KEY (ai_capability_id) REFERENCES royal4_ai_capabilities(id) ON DELETE CASCADE ON UPDATE CASCADE
+    CONSTRAINT fk_ai_functions_capability FOREIGN KEY (ai_capability_id) REFERENCES assipl_ai_capabilities(id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
-CREATE TABLE royal4_ai_capabilities_four_principles (
+CREATE TABLE assipl_ai_capabilities_four_principles (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     ai_capability_id INT UNSIGNED NOT NULL,
     four_principles_headline VARCHAR(255) NOT NULL,
@@ -556,9 +556,9 @@ CREATE TABLE royal4_ai_capabilities_four_principles (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     INDEX idx_ai_principles_capability_id (ai_capability_id),
-    CONSTRAINT fk_ai_principles_capability FOREIGN KEY (ai_capability_id) REFERENCES royal4_ai_capabilities(id) ON DELETE CASCADE ON UPDATE CASCADE
+    CONSTRAINT fk_ai_principles_capability FOREIGN KEY (ai_capability_id) REFERENCES assipl_ai_capabilities(id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
-CREATE TABLE royal4_ai_capabilities_ai_advantage (
+CREATE TABLE assipl_ai_capabilities_ai_advantage (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     ai_capability_id INT UNSIGNED NOT NULL,
     ai_advantage_icon VARCHAR(255) DEFAULT NULL,
@@ -570,9 +570,9 @@ CREATE TABLE royal4_ai_capabilities_ai_advantage (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     INDEX idx_ai_advantage_capability_id (ai_capability_id),
-    CONSTRAINT fk_ai_advantage_capability FOREIGN KEY (ai_capability_id) REFERENCES royal4_ai_capabilities(id) ON DELETE CASCADE ON UPDATE CASCADE
+    CONSTRAINT fk_ai_advantage_capability FOREIGN KEY (ai_capability_id) REFERENCES assipl_ai_capabilities(id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
-CREATE TABLE royal4_about (
+CREATE TABLE assipl_about (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     about_title VARCHAR(255) NOT NULL,
     about_description TEXT,
@@ -589,7 +589,7 @@ CREATE TABLE royal4_about (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
-CREATE TABLE royal4_about_our_story (
+CREATE TABLE assipl_about_our_story (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     our_story_year VARCHAR(20) NOT NULL,
     our_story_headline VARCHAR(255) NOT NULL,
@@ -597,42 +597,42 @@ CREATE TABLE royal4_about_our_story (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
-CREATE TABLE royal4_about_what_standsfor (
+CREATE TABLE assipl_about_what_standsfor (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     mission_description LONGTEXT,
     vision_description LONGTEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
-CREATE TABLE royal4_about_values (
+CREATE TABLE assipl_about_values (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     value VARCHAR(255) NOT NULL,
     description LONGTEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
-CREATE TABLE royal4_about_how_we_think (
+CREATE TABLE assipl_about_how_we_think (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     how_we_think_headline VARCHAR(255) NOT NULL,
     how_we_think_description LONGTEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
-CREATE TABLE royal4_about_people_behind_tags (
+CREATE TABLE assipl_about_people_behind_tags (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     icon VARCHAR(500),
     tags VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
-CREATE TABLE royal4_about_result (
+CREATE TABLE assipl_about_result (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     value VARCHAR(100) NOT NULL,
     label VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
-CREATE TABLE royal4_about_ecosystem (
+CREATE TABLE assipl_about_ecosystem (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     ecosystem_item VARCHAR(255) NOT NULL,
     ecosystem_link VARCHAR(500),
@@ -640,7 +640,7 @@ CREATE TABLE royal4_about_ecosystem (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
-CREATE TABLE royal4_process (
+CREATE TABLE assipl_process (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     process_title VARCHAR(255) NOT NULL,
     process_subtitle VARCHAR(255),
@@ -658,7 +658,7 @@ CREATE TABLE royal4_process (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
-CREATE TABLE royal4_process_reporting (
+CREATE TABLE assipl_process_reporting (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     headline VARCHAR(255) NOT NULL,
     description LONGTEXT,
@@ -666,14 +666,14 @@ CREATE TABLE royal4_process_reporting (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
-CREATE TABLE royal4_process_reporting_insights (
+CREATE TABLE assipl_process_reporting_insights (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     insight VARCHAR(255) NOT NULL,
     sort_order TINYINT UNSIGNED DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
-CREATE TABLE royal4_process_system_works (
+CREATE TABLE assipl_process_system_works (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     system_works_headline VARCHAR(255) NOT NULL,
     system_works_description1 LONGTEXT,
@@ -682,16 +682,16 @@ CREATE TABLE royal4_process_system_works (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
-CREATE TABLE royal4_process_system_works_list (
+CREATE TABLE assipl_process_system_works_list (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     system_work_id INT UNSIGNED NOT NULL,
     system_work_item VARCHAR(255) NOT NULL,
     sort_order TINYINT UNSIGNED DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    CONSTRAINT fk_process_system_works_list_parent FOREIGN KEY (system_work_id) REFERENCES royal4_process_system_works(id) ON DELETE CASCADE
+    CONSTRAINT fk_process_system_works_list_parent FOREIGN KEY (system_work_id) REFERENCES assipl_process_system_works(id) ON DELETE CASCADE
 );
-CREATE TABLE royal4_process_growth (
+CREATE TABLE assipl_process_growth (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     growth_icon VARCHAR(500),
     growth_headline VARCHAR(255) NOT NULL,
@@ -700,14 +700,14 @@ CREATE TABLE royal4_process_growth (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
-ALTER TABLE royal4_process_system_works_list
+ALTER TABLE assipl_process_system_works_list
 ADD COLUMN system_work_id INT UNSIGNED NOT NULL
 AFTER id,
     ADD INDEX idx_process_system_works_list_parent (system_work_id),
-    ADD CONSTRAINT fk_process_system_works_list_parent FOREIGN KEY (system_work_id) REFERENCES royal4_process_system_works(id) ON DELETE CASCADE;
+    ADD CONSTRAINT fk_process_system_works_list_parent FOREIGN KEY (system_work_id) REFERENCES assipl_process_system_works(id) ON DELETE CASCADE;
 
 
-CREATE TABLE royal4_testimonials (
+CREATE TABLE assipl_testimonials (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     designation VARCHAR(255),
@@ -720,7 +720,7 @@ CREATE TABLE royal4_testimonials (
     )
 );
 
-CREATE TABLE royal4_contact_page (
+CREATE TABLE assipl_contact_page (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 
     contact_title VARCHAR(255) NOT NULL,
@@ -744,7 +744,7 @@ CREATE TABLE royal4_contact_page (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
-CREATE TABLE royal4_case_study_challenges (
+CREATE TABLE assipl_case_study_challenges (
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     description TEXT,
@@ -756,32 +756,32 @@ DEFAULT CHARSET=utf8mb4
 COLLATE=utf8mb4_unicode_ci;
 
 -- link case study challenges to their parent case study, matching the other child sections
-ALTER TABLE royal4_case_study_challenges
+ALTER TABLE assipl_case_study_challenges
 ADD COLUMN case_study_id BIGINT UNSIGNED NOT NULL AFTER id,
 ADD COLUMN sort_order INT NOT NULL DEFAULT 0 AFTER description;
 
-ALTER TABLE royal4_case_study_challenges
-ADD KEY royal4_case_study_challenges_case_study_id_index (case_study_id),
-ADD CONSTRAINT royal4_case_study_challenges_case_study_fk
+ALTER TABLE assipl_case_study_challenges
+ADD KEY assipl_case_study_challenges_case_study_id_index (case_study_id),
+ADD CONSTRAINT assipl_case_study_challenges_case_study_fk
     FOREIGN KEY (case_study_id)
-    REFERENCES royal4_case_study (id)
+    REFERENCES assipl_case_study (id)
     ON UPDATE CASCADE
     ON DELETE CASCADE;
 
--- replaced by the royal4_case_study_challenges relation above
-ALTER TABLE royal4_case_study
+-- replaced by the assipl_case_study_challenges relation above
+ALTER TABLE assipl_case_study
 DROP COLUMN challenge_list;
 
-ALTER TABLE royal4_about_values
+ALTER TABLE assipl_about_values
 ADD COLUMN description LONGTEXT NULL AFTER value;
 
-ALTER TABLE `royal4_home_pages`
+ALTER TABLE `assipl_home_pages`
 ADD COLUMN `hero_video` TEXT NULL AFTER `id`,
 ADD COLUMN `title1` VARCHAR(255) NULL AFTER `hero_video`,
 ADD COLUMN `title2` VARCHAR(255) NULL AFTER `title1`,
 ADD COLUMN `title3` VARCHAR(255) NULL AFTER `title2`,
 ADD COLUMN `subtitle` TEXT NULL AFTER `title3`;
-CREATE TABLE IF NOT EXISTS royal4_newsletter_subscribers (
+CREATE TABLE IF NOT EXISTS assipl_newsletter_subscribers (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255) NOT NULL UNIQUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

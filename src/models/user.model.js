@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.INTEGER,
                 allowNull: true,
                 references: {
-                    model: "royal4_user_roles",
+                    model: "assipl_user_roles",
                     key: "id",
                 },
                 onDelete: "SET NULL",
@@ -50,7 +50,7 @@ module.exports = (sequelize, DataTypes) => {
             },
         },
         {
-            tableName: "royal4_users",
+            tableName: "assipl_users",
             timestamps: true,
             createdAt: "createdAt",
             updatedAt: "updatedAt",

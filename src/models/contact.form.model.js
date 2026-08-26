@@ -45,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
             },
         },
         {
-            tableName: "royal4_contact",
+            tableName: "assipl_contact",
             timestamps: true,
             createdAt: "created_at",
             updatedAt: "updated_at",

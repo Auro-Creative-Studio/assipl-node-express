@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.INTEGER,
                 allowNull: true,
                 references: {
-                    model: "royal4_blog_categories",
+                    model: "assipl_blog_categories",
                     key: "id",
                 },
             },
@@ -119,7 +119,7 @@ module.exports = (sequelize, DataTypes) => {
             },
         },
         {
-            tableName: "royal4_blogs",
+            tableName: "assipl_blogs",
             timestamps: true,
             createdAt: "created_at",
             updatedAt: "updated_at",

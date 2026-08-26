@@ -64,7 +64,7 @@ module.exports = (sequelize, DataTypes) => {
             },
         },
         {
-            tableName: 'royal4_cookie_consents',
+            tableName: 'assipl_cookie_consents',
 
             timestamps: true,
 

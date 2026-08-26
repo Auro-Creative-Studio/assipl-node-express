@@ -1,50 +1,36 @@
 module.exports = (sequelize, DataTypes) => {
-    const Enquiry = sequelize.define(
-        "Enquiry",
+    const UserRole = sequelize.define(
+        "UserRole",
         {
             id: {
                 type: DataTypes.INTEGER,
                 primaryKey: true,
                 autoIncrement: true,
+                allowNull: false,
             },
 
             name: {
-                type: DataTypes.STRING(150),
-                allowNull: false,
-            },
-
-            mobile_number: {
-                type: DataTypes.STRING(20),
-                allowNull: false,
-            },
-
-            email: {
                 type: DataTypes.STRING(255),
                 allowNull: false,
             },
 
-            service_needed: {
+            description: {
                 type: DataTypes.STRING(255),
-                allowNull: false,
-            },
-
-            budget_rs: {
-                type: DataTypes.DECIMAL(10, 2),
                 allowNull: true,
             },
 
-            company_brief: {
-                type: DataTypes.TEXT,
+            type: {
+                type: DataTypes.STRING(255),
                 allowNull: true,
             },
         },
         {
-            tableName: "assipl_enquiry",
+            tableName: "assipl_user_roles",
             timestamps: true,
             createdAt: "created_at",
             updatedAt: "updated_at",
         }
     );
 
-    return Enquiry;
+    return UserRole;
 };

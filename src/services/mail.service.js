@@ -23,7 +23,7 @@ const sendPasswordResetOtp = async ({ to, otp, expiresInMinutes }) => {
     return transporter.sendMail({
         from,
         to,
-        subject: "Your Royal4Media password reset OTP",
+        subject: "Your ASSIPL password reset OTP",
         text: `Your password reset OTP is ${otp}. It will expire in ${expiresInMinutes} minutes.`,
         html: `
             <p>Your password reset OTP is:</p>

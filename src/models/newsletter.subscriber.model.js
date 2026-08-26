@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => sequelize.define(
         email: { type: DataTypes.STRING(255), allowNull: false, unique: true },
     },
     {
-        tableName: "royal4_newsletter_subscribers",
+        tableName: "assipl_newsletter_subscribers",
         timestamps: true,
         createdAt: "created_at",
         updatedAt: "updated_at",

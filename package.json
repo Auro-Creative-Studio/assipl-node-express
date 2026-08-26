@@ -1,10 +1,11 @@
 {
-  "name": "royal4media",
+  "name": "assipl-node-express",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon server.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "seed:superadmin": "node scripts/seedSuperAdmin.js"
   },
   "keywords": [],
   "author": "",
