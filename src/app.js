@@ -1,6 +1,9 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
+const sitemapRoutes = require('./routes/sitemap.routes');
+const { renderIndexHtml } = require('./utils/renderIndexHtml');
 
 const seoRoutes = require('./routes/seo.routes');
 const cookieConsentRoutes = require('./routes/cookie.consent.routes');
@@ -66,5 +69,37 @@ app.use('/api/services-page', servicesPageRoutes);
 app.use('/api/services-strategic', servicesStrategicRoutes);
 app.use('/api/services-core-projects', servicesCoreProjectRoutes);
 app.use('/api/services-maintenance', servicesMaintenanceRoutes);
+
+app.use(sitemapRoutes);
+
+const frontendDistPath = path.join(__dirname, '../../assipl-reactjs/dist');
+const frontendIndexPath = path.join(frontendDistPath, 'index.html');
+
+if (fs.existsSync(frontendIndexPath)) {
+    app.use(express.static(frontendDistPath, { index: false }));
+
+    app.use(async (req, res, next) => {
+        if (req.method !== 'GET' || req.path.startsWith('/api') || req.path.startsWith('/uploads')) {
+            return next();
+        }
+
+        if (path.extname(req.path)) {
+            return next();
+        }
+
+        try {
+            const siteUrl = (process.env.SITE_URL || `${req.protocol}://${req.get('host')}`).replace(/\/$/, '');
+            const html = await renderIndexHtml(frontendIndexPath, req.path, siteUrl);
+
+            res.set('Content-Type', 'text/html');
+            return res.send(html);
+        } catch (error) {
+            return res.sendFile(frontendIndexPath);
+        }
+    });
+} else {
+    console.warn('Frontend build not found at', frontendDistPath, '- skipping static frontend serving.');
+}
+
 module.exports = app;
 
