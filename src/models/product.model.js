@@ -132,6 +132,12 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.BOOLEAN,
                 defaultValue: true,
             },
+
+            sort_order: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                defaultValue: 0,
+            },
         },
         {
             tableName: "assipl_products",

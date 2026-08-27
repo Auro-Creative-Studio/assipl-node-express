@@ -61,7 +61,7 @@ exports.createProduct = async (req, res) => {
 exports.getAllProducts = async (req, res) => {
     try {
         const products = await Product.findAll({
-            order: [["id", "DESC"]],
+            order: [["sort_order", "ASC"], ["id", "ASC"]],
         });
 
         return res.status(200).json({
@@ -82,12 +82,39 @@ exports.getPublishedProducts = async (req, res) => {
             where: {
                 published: true,
             },
-            order: [["id", "DESC"]],
+            order: [["sort_order", "ASC"], ["id", "ASC"]],
         });
 
         return res.status(200).json({
             success: true,
             data: products,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message,
+        });
+    }
+};
+
+exports.reorderProducts = async (req, res) => {
+    try {
+        const { ids } = req.body;
+
+        if (!Array.isArray(ids) || ids.length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: "ids must be a non-empty array",
+            });
+        }
+
+        await Promise.all(
+            ids.map((id, index) => Product.update({ sort_order: index }, { where: { id } }))
+        );
+
+        return res.status(200).json({
+            success: true,
+            message: "Order updated successfully",
         });
     } catch (error) {
         return res.status(500).json({

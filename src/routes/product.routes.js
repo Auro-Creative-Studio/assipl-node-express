@@ -15,6 +15,8 @@ router.get("/slug/:slug", productController.getProductBySlug);
 
 router.get("/:id", productController.getProductById);
 
+router.put("/reorder", auth, productController.reorderProducts);
+
 router.put("/:id", auth, productController.updateProduct);
 
 router.delete("/:id", auth, productController.deleteProduct);
