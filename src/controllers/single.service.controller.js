@@ -4,6 +4,7 @@ const { Op } = require("sequelize");
 const SingleService = db.SingleService;
 const SingleServiceAdvantage = db.SingleServiceAdvantage;
 const ServiceModel = db.ServiceModel;
+const ServiceFeature = db.ServiceFeature;
 
 const childInclude = [
     {
@@ -15,6 +16,12 @@ const childInclude = [
     {
         model: ServiceModel,
         as: "models",
+        separate: true,
+        order: [["sort_order", "ASC"]],
+    },
+    {
+        model: ServiceFeature,
+        as: "features",
         separate: true,
         order: [["sort_order", "ASC"]],
     },
@@ -83,9 +90,24 @@ const replaceModels = async (serviceId, models) => {
     );
 };
 
+const replaceFeatures = async (serviceId, features) => {
+    await ServiceFeature.destroy({ where: { service_id: serviceId } });
+
+    if (!Array.isArray(features) || features.length === 0) return;
+
+    await ServiceFeature.bulkCreate(
+        features.map((feature, index) => ({
+            ...feature,
+            id: undefined,
+            service_id: serviceId,
+            sort_order: feature.sort_order ?? index,
+        }))
+    );
+};
+
 exports.createSingleService = async (req, res) => {
     try {
-        const { advantages, models, ...serviceData } = req.body;
+        const { advantages, models, features, ...serviceData } = req.body;
 
         if (serviceData.title && !serviceData.slug) {
             serviceData.slug = await generateUniqueSlug(serviceData.title);
@@ -95,6 +117,7 @@ exports.createSingleService = async (req, res) => {
 
         if (advantages) await replaceAdvantages(service.id, advantages);
         if (models) await replaceModels(service.id, models);
+        if (features) await replaceFeatures(service.id, features);
 
         const createdService = await SingleService.findByPk(service.id, {
             include: childInclude,
@@ -222,7 +245,7 @@ exports.updateSingleService = async (req, res) => {
             });
         }
 
-        const { advantages, models, ...serviceData } = req.body;
+        const { advantages, models, features, ...serviceData } = req.body;
 
         if (serviceData.title && !serviceData.slug) {
             serviceData.slug = await generateUniqueSlug(serviceData.title, service.id);
@@ -232,6 +255,7 @@ exports.updateSingleService = async (req, res) => {
 
         if (advantages) await replaceAdvantages(service.id, advantages);
         if (models) await replaceModels(service.id, models);
+        if (features) await replaceFeatures(service.id, features);
 
         const updatedService = await SingleService.findByPk(service.id, {
             include: childInclude,

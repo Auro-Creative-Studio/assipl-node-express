@@ -15,6 +15,7 @@ const ALLOWED_TABLES = [
   'assipl_single_service',
   'assipl_single_service_advantages',
   'assipl_single_services_models',
+  'assipl_single_service_features',
   'assipl_enquire_form',
   'assipl_contact_form',
   'assipl_career_positions',

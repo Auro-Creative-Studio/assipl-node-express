@@ -17,6 +17,7 @@ db.NewsletterSubscriber = require('./newsletter.subscriber.model')(sequelize, Da
 db.SingleService = require('./single.service.model')(sequelize, DataTypes);
 db.SingleServiceAdvantage = require('./single.service.advantage.model')(sequelize, DataTypes);
 db.ServiceModel = require('./service.model.model')(sequelize, DataTypes);
+db.ServiceFeature = require('./service.feature.model')(sequelize, DataTypes);
 db.EnquireForm = require('./enquire.form.model')(sequelize, DataTypes);
 db.ContactFormEntry = require('./contact.form.entry.model')(sequelize, DataTypes);
 db.CareerPosition = require('./career.position.model')(sequelize, DataTypes);
@@ -63,6 +64,17 @@ db.SingleService.hasMany(db.ServiceModel, {
 });
 
 db.ServiceModel.belongsTo(db.SingleService, {
+    foreignKey: "service_id",
+    as: "service",
+});
+
+db.SingleService.hasMany(db.ServiceFeature, {
+    foreignKey: "service_id",
+    as: "features",
+    onDelete: "CASCADE",
+});
+
+db.ServiceFeature.belongsTo(db.SingleService, {
     foreignKey: "service_id",
     as: "service",
 });

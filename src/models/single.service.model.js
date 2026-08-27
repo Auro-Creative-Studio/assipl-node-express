@@ -69,6 +69,11 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: true,
             },
 
+            service_features_title: {
+                type: DataTypes.STRING(255),
+                allowNull: true,
+            },
+
             cta_title: {
                 type: DataTypes.STRING(255),
                 allowNull: true,
