@@ -42,7 +42,6 @@ module.exports = (sequelize, DataTypes) => {
             slug: {
                 type: DataTypes.STRING(255),
                 allowNull: true,
-                unique: true,
             },
 
             excerpt: {

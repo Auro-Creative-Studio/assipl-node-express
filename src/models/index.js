@@ -25,6 +25,13 @@ db.CareerForm = require('./career.form.model')(sequelize, DataTypes);
 db.Csr = require('./csr.model')(sequelize, DataTypes);
 db.CsrIntroImage = require('./csr.intro.image.model')(sequelize, DataTypes);
 db.CsrSliderImage = require('./csr.slider.image.model')(sequelize, DataTypes);
+db.About = require('./about.model')(sequelize, DataTypes);
+db.AboutLogo = require('./about.logo.model')(sequelize, DataTypes);
+db.AboutFeature = require('./about.feature.model')(sequelize, DataTypes);
+db.ServicesPage = require('./services.page.model')(sequelize, DataTypes);
+db.ServicesStrategic = require('./services.strategic.model')(sequelize, DataTypes);
+db.ServicesCoreProject = require('./services.core.project.model')(sequelize, DataTypes);
+db.ServicesMaintenance = require('./services.maintenance.model')(sequelize, DataTypes);
 
 db.User.belongsTo(db.UserRole, {
     foreignKey: "role_id",
@@ -109,6 +116,61 @@ db.Csr.hasMany(db.CsrSliderImage, {
 db.CsrSliderImage.belongsTo(db.Csr, {
     foreignKey: "csr_id",
     as: "csr",
+});
+
+db.About.hasMany(db.AboutLogo, {
+    foreignKey: "about_id",
+    as: "logos",
+    onDelete: "CASCADE",
+});
+
+db.AboutLogo.belongsTo(db.About, {
+    foreignKey: "about_id",
+    as: "about",
+});
+
+db.About.hasMany(db.AboutFeature, {
+    foreignKey: "about_id",
+    as: "features",
+    onDelete: "CASCADE",
+});
+
+db.AboutFeature.belongsTo(db.About, {
+    foreignKey: "about_id",
+    as: "about",
+});
+
+db.ServicesPage.hasMany(db.ServicesStrategic, {
+    foreignKey: "service_page_id",
+    as: "strategic_items",
+    onDelete: "CASCADE",
+});
+
+db.ServicesStrategic.belongsTo(db.ServicesPage, {
+    foreignKey: "service_page_id",
+    as: "service_page",
+});
+
+db.ServicesPage.hasMany(db.ServicesCoreProject, {
+    foreignKey: "service_page_id",
+    as: "core_projects",
+    onDelete: "CASCADE",
+});
+
+db.ServicesCoreProject.belongsTo(db.ServicesPage, {
+    foreignKey: "service_page_id",
+    as: "service_page",
+});
+
+db.ServicesPage.hasMany(db.ServicesMaintenance, {
+    foreignKey: "service_page_id",
+    as: "maintenance_items",
+    onDelete: "CASCADE",
+});
+
+db.ServicesMaintenance.belongsTo(db.ServicesPage, {
+    foreignKey: "service_page_id",
+    as: "service_page",
 });
 
 module.exports = db;

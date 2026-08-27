@@ -1,62 +1,66 @@
 module.exports = (sequelize, DataTypes) => {
-    const Blog = sequelize.define(
-        "Blog",
+    const ServicesPage = sequelize.define(
+        "ServicesPage",
         {
             id: {
-                type: DataTypes.BIGINT.UNSIGNED,
+                type: DataTypes.INTEGER.UNSIGNED,
                 autoIncrement: true,
                 primaryKey: true,
             },
 
-            title: {
-                type: DataTypes.STRING(255),
-                allowNull: false,
-            },
-
-            slug: {
-                type: DataTypes.STRING(255),
-                allowNull: true,
-            },
-
-            excerpt: {
+            banner_image: {
                 type: DataTypes.STRING(500),
                 allowNull: true,
             },
 
-            description: {
-                type: DataTypes.TEXT("long"),
-                allowNull: true,
-            },
-
-            featured_image: {
+            services_title: {
                 type: DataTypes.STRING(255),
                 allowNull: true,
             },
 
-            hero_image: {
+            services_description: {
+                type: DataTypes.TEXT("long"),
+                allowNull: true,
+            },
+
+            strategic_image: {
+                type: DataTypes.STRING(500),
+                allowNull: true,
+            },
+
+            strategic_title: {
                 type: DataTypes.STRING(255),
                 allowNull: true,
             },
 
-            content_blocks: {
+            core_project_title: {
+                type: DataTypes.STRING(255),
+                allowNull: true,
+            },
+
+            core_project_description: {
                 type: DataTypes.TEXT("long"),
                 allowNull: true,
-                defaultValue: "[]",
-                get() {
-                    const raw = this.getDataValue("content_blocks");
+            },
 
-                    if (!raw) return [];
-                    if (typeof raw !== "string") return raw;
+            maintenance_title: {
+                type: DataTypes.STRING(255),
+                allowNull: true,
+            },
 
-                    try {
-                        return JSON.parse(raw);
-                    } catch {
-                        return [];
-                    }
-                },
-                set(value) {
-                    this.setDataValue("content_blocks", JSON.stringify(value ?? []));
-                },
+            learn_more_link: {
+                type: DataTypes.STRING(500),
+                allowNull: true,
+            },
+
+            know_more_link: {
+                type: DataTypes.STRING(500),
+                allowNull: true,
+            },
+
+            read_more_link: {
+                type: DataTypes.STRING(500),
+                allowNull: true,
             },
 
             meta_title: {
@@ -96,26 +100,29 @@ module.exports = (sequelize, DataTypes) => {
 
             robots_index: {
                 type: DataTypes.ENUM("index", "noindex"),
+                allowNull: false,
                 defaultValue: "index",
             },
 
             robots_follow: {
                 type: DataTypes.ENUM("follow", "nofollow"),
+                allowNull: false,
                 defaultValue: "follow",
             },
 
             published: {
                 type: DataTypes.BOOLEAN,
+                allowNull: false,
                 defaultValue: true,
             },
         },
         {
-            tableName: "assipl_blogs",
+            tableName: "assipl_services",
             timestamps: true,
             createdAt: "created_at",
             updatedAt: "updated_at",
         }
     );
 
-    return Blog;
+    return ServicesPage;
 };

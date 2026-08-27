@@ -1,62 +1,81 @@
 module.exports = (sequelize, DataTypes) => {
-    const Blog = sequelize.define(
-        "Blog",
+    const About = sequelize.define(
+        "About",
         {
             id: {
-                type: DataTypes.BIGINT.UNSIGNED,
+                type: DataTypes.INTEGER.UNSIGNED,
                 autoIncrement: true,
                 primaryKey: true,
             },
 
-            title: {
-                type: DataTypes.STRING(255),
-                allowNull: false,
-            },
-
-            slug: {
-                type: DataTypes.STRING(255),
-                allowNull: true,
-            },
-
-            excerpt: {
+            banner_image: {
                 type: DataTypes.STRING(500),
                 allowNull: true,
             },
 
-            description: {
-                type: DataTypes.TEXT("long"),
-                allowNull: true,
-            },
-
-            featured_image: {
+            banner_title: {
                 type: DataTypes.STRING(255),
                 allowNull: true,
             },
 
-            hero_image: {
+            banner_description: {
+                type: DataTypes.TEXT,
+                allowNull: true,
+            },
+
+            about_image: {
+                type: DataTypes.STRING(500),
+                allowNull: true,
+            },
+
+            about_title: {
                 type: DataTypes.STRING(255),
                 allowNull: true,
             },
 
-            content_blocks: {
+            about_description: {
                 type: DataTypes.TEXT("long"),
                 allowNull: true,
-                defaultValue: "[]",
-                get() {
-                    const raw = this.getDataValue("content_blocks");
+            },
 
-                    if (!raw) return [];
-                    if (typeof raw !== "string") return raw;
+            download_brochure: {
+                type: DataTypes.STRING(500),
+                allowNull: true,
+            },
 
-                    try {
-                        return JSON.parse(raw);
-                    } catch {
-                        return [];
-                    }
-                },
-                set(value) {
-                    this.setDataValue("content_blocks", JSON.stringify(value ?? []));
-                },
+            manufacture_title: {
+                type: DataTypes.STRING(255),
+                allowNull: true,
+            },
+
+            securing_title: {
+                type: DataTypes.STRING(255),
+                allowNull: true,
+            },
+
+            securing_description: {
+                type: DataTypes.TEXT("long"),
+                allowNull: true,
+            },
+
+            securing_image: {
+                type: DataTypes.STRING(500),
+                allowNull: true,
+            },
+
+            future_title: {
+                type: DataTypes.STRING(255),
+                allowNull: true,
+            },
+
+            future_description: {
+                type: DataTypes.TEXT("long"),
+                allowNull: true,
+            },
+
+            future_image: {
+                type: DataTypes.STRING(500),
+                allowNull: true,
             },
 
             meta_title: {
@@ -96,26 +115,29 @@ module.exports = (sequelize, DataTypes) => {
 
             robots_index: {
                 type: DataTypes.ENUM("index", "noindex"),
+                allowNull: false,
                 defaultValue: "index",
             },
 
             robots_follow: {
                 type: DataTypes.ENUM("follow", "nofollow"),
+                allowNull: false,
                 defaultValue: "follow",
             },
 
             published: {
                 type: DataTypes.BOOLEAN,
+                allowNull: false,
                 defaultValue: true,
             },
         },
         {
-            tableName: "assipl_blogs",
+            tableName: "assipl_about",
             timestamps: true,
             createdAt: "created_at",
             updatedAt: "updated_at",
         }
     );
 
-    return Blog;
+    return About;
 };

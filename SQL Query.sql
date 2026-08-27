@@ -980,4 +980,231 @@ ALTER TABLE assipl_products
 ALTER TABLE assipl_single_service
   ADD COLUMN sort_order INT NOT NULL DEFAULT 0;
 
+CREATE TABLE assipl_about (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    -- Banner Section
+    banner_image VARCHAR(500) DEFAULT NULL,
+    banner_title VARCHAR(255) DEFAULT NULL,
+    banner_description TEXT DEFAULT NULL,
+
+    -- About Section
+    about_image VARCHAR(500) DEFAULT NULL,
+    about_title VARCHAR(255) DEFAULT NULL,
+    about_description LONGTEXT DEFAULT NULL,
+    download_brochure VARCHAR(500) DEFAULT NULL,
+
+    -- Manufacturer Section
+    manufacture_title VARCHAR(255) DEFAULT NULL,
+
+    -- Securing the Future Section
+    securing_title VARCHAR(255) DEFAULT NULL,
+    securing_description LONGTEXT DEFAULT NULL,
+    securing_image VARCHAR(500) DEFAULT NULL,
+
+    -- Future Section
+    future_title VARCHAR(255) DEFAULT NULL,
+    future_description LONGTEXT DEFAULT NULL,
+    future_image VARCHAR(500) DEFAULT NULL,
+
+    -- SEO
+    meta_title VARCHAR(255) DEFAULT NULL,
+    meta_description TEXT DEFAULT NULL,
+    meta_keywords TEXT DEFAULT NULL,
+
+    og_title VARCHAR(255) DEFAULT NULL,
+    og_description TEXT DEFAULT NULL,
+    og_image VARCHAR(255) DEFAULT NULL,
+
+    image_alt_text VARCHAR(255) DEFAULT NULL,
+
+    robots_index ENUM('index', 'noindex') NOT NULL DEFAULT 'index',
+    robots_follow ENUM('follow', 'nofollow') NOT NULL DEFAULT 'follow',
+
+    published TINYINT(1) NOT NULL DEFAULT 1,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE assipl_about_logos (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    about_id INT UNSIGNED NOT NULL,
+
+    logo VARCHAR(500) NOT NULL,
+    sort_order INT NOT NULL DEFAULT 0,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_about_logos_about
+        FOREIGN KEY (about_id)
+        REFERENCES assipl_about(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    INDEX idx_about_logos_about_id (about_id),
+    INDEX idx_about_logos_sort_order (sort_order)
+);
+
+CREATE TABLE assipl_about_features (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    about_id INT UNSIGNED NOT NULL,
+
+    logo VARCHAR(500) DEFAULT NULL,
+    description TEXT DEFAULT NULL,
+    sort_order INT NOT NULL DEFAULT 0,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_about_features_about
+        FOREIGN KEY (about_id)
+        REFERENCES assipl_about(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    INDEX idx_about_features_about_id (about_id),
+    INDEX idx_about_features_sort_order (sort_order)
+);
+
+ALTER TABLE assipl_single_service
+ADD COLUMN meta_title VARCHAR(255) DEFAULT NULL,
+ADD COLUMN meta_description TEXT DEFAULT NULL,
+ADD COLUMN meta_keywords TEXT DEFAULT NULL,
+ADD COLUMN og_title VARCHAR(255) DEFAULT NULL,
+ADD COLUMN og_description TEXT DEFAULT NULL,
+ADD COLUMN og_image VARCHAR(255) DEFAULT NULL,
+ADD COLUMN image_alt_text VARCHAR(255) DEFAULT NULL,
+ADD COLUMN robots_index ENUM('index', 'noindex') NOT NULL DEFAULT 'index',
+ADD COLUMN robots_follow ENUM('follow', 'nofollow') NOT NULL DEFAULT 'follow',
+ADD COLUMN published TINYINT(1) NOT NULL DEFAULT 1;
+
+CREATE TABLE assipl_services (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    -- Banner
+    banner_image VARCHAR(500) DEFAULT NULL,
+
+    -- Services Intro
+    services_title VARCHAR(255) DEFAULT NULL,
+    services_description LONGTEXT DEFAULT NULL,
+
+    -- Strategic Section
+    strategic_image VARCHAR(500) DEFAULT NULL,
+    strategic_title VARCHAR(255) DEFAULT NULL,
+
+    -- Core Project Section
+    core_project_title VARCHAR(255) DEFAULT NULL,
+    core_project_description LONGTEXT DEFAULT NULL,
+
+    -- Maintenance Section
+    maintenance_title VARCHAR(255) DEFAULT NULL,
+
+    -- CTA / Links
+    learn_more_link VARCHAR(500) DEFAULT NULL,
+    know_more_link VARCHAR(500) DEFAULT NULL,
+    read_more_link VARCHAR(500) DEFAULT NULL,
+
+    -- SEO
+    meta_title VARCHAR(255) DEFAULT NULL,
+    meta_description TEXT DEFAULT NULL,
+    meta_keywords TEXT DEFAULT NULL,
+
+    og_title VARCHAR(255) DEFAULT NULL,
+    og_description TEXT DEFAULT NULL,
+    og_image VARCHAR(255) DEFAULT NULL,
+
+    image_alt_text VARCHAR(255) DEFAULT NULL,
+
+    robots_index ENUM('index', 'noindex') NOT NULL DEFAULT 'index',
+    robots_follow ENUM('follow', 'nofollow') NOT NULL DEFAULT 'follow',
+
+    published TINYINT(1) NOT NULL DEFAULT 1,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE assipl_services_strategic (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    service_page_id INT UNSIGNED NOT NULL,
+
+    icon VARCHAR(500) DEFAULT NULL,
+    heading VARCHAR(255) DEFAULT NULL,
+    description TEXT DEFAULT NULL,
+
+    sort_order INT NOT NULL DEFAULT 0,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_services_strategic_page
+        FOREIGN KEY (service_page_id)
+        REFERENCES assipl_services(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    INDEX idx_services_strategic_page_id (service_page_id),
+    INDEX idx_services_strategic_sort_order (sort_order)
+);
+
+CREATE TABLE assipl_services_core_project (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    service_page_id INT UNSIGNED NOT NULL,
+
+    icon VARCHAR(500) DEFAULT NULL,
+    heading VARCHAR(255) DEFAULT NULL,
+    description TEXT DEFAULT NULL,
+
+    sort_order INT NOT NULL DEFAULT 0,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_services_core_project_page
+        FOREIGN KEY (service_page_id)
+        REFERENCES assipl_services(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    INDEX idx_services_core_project_page_id (service_page_id),
+    INDEX idx_services_core_project_sort_order (sort_order)
+);
+
+CREATE TABLE assipl_services_maintenance (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    service_page_id INT UNSIGNED NOT NULL,
+
+    image VARCHAR(500) DEFAULT NULL,
+    heading VARCHAR(255) DEFAULT NULL,
+    description TEXT DEFAULT NULL,
+
+    sort_order INT NOT NULL DEFAULT 0,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_services_maintenance_page
+        FOREIGN KEY (service_page_id)
+        REFERENCES assipl_services(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    INDEX idx_services_maintenance_page_id (service_page_id),
+    INDEX idx_services_maintenance_sort_order (sort_order)
+);
+
 

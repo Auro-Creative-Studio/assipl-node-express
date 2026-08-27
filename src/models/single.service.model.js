@@ -16,7 +16,6 @@ module.exports = (sequelize, DataTypes) => {
             slug: {
                 type: DataTypes.STRING(255),
                 allowNull: false,
-                unique: true,
             },
 
             banner_title: {
@@ -87,6 +86,59 @@ module.exports = (sequelize, DataTypes) => {
             cta_image: {
                 type: DataTypes.STRING(500),
                 allowNull: true,
+            },
+
+            meta_title: {
+                type: DataTypes.STRING(255),
+                allowNull: true,
+            },
+
+            meta_description: {
+                type: DataTypes.TEXT,
+                allowNull: true,
+            },
+
+            meta_keywords: {
+                type: DataTypes.TEXT,
+                allowNull: true,
+            },
+
+            og_title: {
+                type: DataTypes.STRING(255),
+                allowNull: true,
+            },
+
+            og_description: {
+                type: DataTypes.TEXT,
+                allowNull: true,
+            },
+
+            og_image: {
+                type: DataTypes.STRING(255),
+                allowNull: true,
+            },
+
+            image_alt_text: {
+                type: DataTypes.STRING(255),
+                allowNull: true,
+            },
+
+            robots_index: {
+                type: DataTypes.ENUM("index", "noindex"),
+                allowNull: false,
+                defaultValue: "index",
+            },
+
+            robots_follow: {
+                type: DataTypes.ENUM("follow", "nofollow"),
+                allowNull: false,
+                defaultValue: "follow",
+            },
+
+            published: {
+                type: DataTypes.BOOLEAN,
+                allowNull: false,
+                defaultValue: true,
             },
 
             status: {

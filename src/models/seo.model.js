@@ -11,7 +11,6 @@ module.exports = (sequelize, DataTypes) => {
             page_type: {
                 type: DataTypes.STRING(100),
                 allowNull: false,
-                unique: true,
             },
 
             meta_title: {

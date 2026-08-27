@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes) => sequelize.define(
     "NewsletterSubscriber",
     {
         id: { type: DataTypes.INTEGER.UNSIGNED, autoIncrement: true, primaryKey: true },
-        email: { type: DataTypes.STRING(255), allowNull: false, unique: true },
+        email: { type: DataTypes.STRING(255), allowNull: false },
     },
     {
         tableName: "assipl_newsletter_subscribers",

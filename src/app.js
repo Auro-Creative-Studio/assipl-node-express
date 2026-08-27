@@ -21,6 +21,13 @@ const careerFormRoutes = require('./routes/career.form.routes');
 const csrRoutes = require('./routes/csr.routes');
 const csrIntroImageRoutes = require('./routes/csr.intro.image.routes');
 const csrSliderImageRoutes = require('./routes/csr.slider.image.routes');
+const aboutRoutes = require('./routes/about.routes');
+const aboutLogoRoutes = require('./routes/about.logo.routes');
+const aboutFeatureRoutes = require('./routes/about.feature.routes');
+const servicesPageRoutes = require('./routes/services.page.routes');
+const servicesStrategicRoutes = require('./routes/services.strategic.routes');
+const servicesCoreProjectRoutes = require('./routes/services.core.project.routes');
+const servicesMaintenanceRoutes = require('./routes/services.maintenance.routes');
 const app = express();
 
 app.use(cors());
@@ -46,5 +53,12 @@ app.use('/api/career-forms', careerFormRoutes);
 app.use('/api/csr', csrRoutes);
 app.use('/api/csr-intro-images', csrIntroImageRoutes);
 app.use('/api/csr-slider-images', csrSliderImageRoutes);
+app.use('/api/about', aboutRoutes);
+app.use('/api/about-logos', aboutLogoRoutes);
+app.use('/api/about-features', aboutFeatureRoutes);
+app.use('/api/services-page', servicesPageRoutes);
+app.use('/api/services-strategic', servicesStrategicRoutes);
+app.use('/api/services-core-projects', servicesCoreProjectRoutes);
+app.use('/api/services-maintenance', servicesMaintenanceRoutes);
 module.exports = app;
 
