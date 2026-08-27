@@ -13,6 +13,8 @@ router.get("/slug/:slug", singleServiceController.getSingleServiceBySlug);
 
 router.get("/:id", singleServiceController.getSingleServiceById);
 
+router.put("/reorder", auth, singleServiceController.reorderSingleServices);
+
 router.put("/:id", auth, singleServiceController.updateSingleService);
 
 router.delete("/:id", auth, singleServiceController.deleteSingleService);

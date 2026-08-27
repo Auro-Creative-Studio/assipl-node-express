@@ -116,12 +116,39 @@ exports.createSingleService = async (req, res) => {
 exports.getAllSingleServices = async (req, res) => {
     try {
         const services = await SingleService.findAll({
-            order: [["id", "DESC"]],
+            order: [["sort_order", "ASC"], ["id", "ASC"]],
         });
 
         return res.status(200).json({
             success: true,
             data: services,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message,
+        });
+    }
+};
+
+exports.reorderSingleServices = async (req, res) => {
+    try {
+        const { ids } = req.body;
+
+        if (!Array.isArray(ids) || ids.length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: "ids must be a non-empty array",
+            });
+        }
+
+        await Promise.all(
+            ids.map((id, index) => SingleService.update({ sort_order: index }, { where: { id } }))
+        );
+
+        return res.status(200).json({
+            success: true,
+            message: "Order updated successfully",
         });
     } catch (error) {
         return res.status(500).json({

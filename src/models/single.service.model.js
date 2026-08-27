@@ -89,6 +89,12 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false,
                 defaultValue: true,
             },
+
+            sort_order: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                defaultValue: 0,
+            },
         },
         {
             tableName: "assipl_single_service",
