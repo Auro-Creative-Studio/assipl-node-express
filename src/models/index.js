@@ -21,6 +21,9 @@ db.EnquireForm = require('./enquire.form.model')(sequelize, DataTypes);
 db.ContactFormEntry = require('./contact.form.entry.model')(sequelize, DataTypes);
 db.CareerPosition = require('./career.position.model')(sequelize, DataTypes);
 db.CareerForm = require('./career.form.model')(sequelize, DataTypes);
+db.Csr = require('./csr.model')(sequelize, DataTypes);
+db.CsrIntroImage = require('./csr.intro.image.model')(sequelize, DataTypes);
+db.CsrSliderImage = require('./csr.slider.image.model')(sequelize, DataTypes);
 
 db.User.belongsTo(db.UserRole, {
     foreignKey: "role_id",
@@ -72,6 +75,28 @@ db.CareerPosition.hasMany(db.CareerForm, {
 db.CareerForm.belongsTo(db.CareerPosition, {
     foreignKey: "position_id",
     as: "position",
+});
+
+db.Csr.hasMany(db.CsrIntroImage, {
+    foreignKey: "csr_id",
+    as: "intro_images",
+    onDelete: "CASCADE",
+});
+
+db.CsrIntroImage.belongsTo(db.Csr, {
+    foreignKey: "csr_id",
+    as: "csr",
+});
+
+db.Csr.hasMany(db.CsrSliderImage, {
+    foreignKey: "csr_id",
+    as: "slider_images",
+    onDelete: "CASCADE",
+});
+
+db.CsrSliderImage.belongsTo(db.Csr, {
+    foreignKey: "csr_id",
+    as: "csr",
 });
 
 module.exports = db;

@@ -893,3 +893,80 @@ CREATE TABLE assipl_career_form (
 
     INDEX idx_career_position_id (position_id)
 );
+
+CREATE TABLE assipl_csr (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    banner_image VARCHAR(500) DEFAULT NULL,
+
+    intro_title VARCHAR(255) DEFAULT NULL,
+    intro_description LONGTEXT DEFAULT NULL,
+
+    project_title VARCHAR(255) DEFAULT NULL,
+    project_description LONGTEXT DEFAULT NULL,
+
+    meta_title VARCHAR(255) DEFAULT NULL,
+    meta_description TEXT DEFAULT NULL,
+
+    status TINYINT(1) NOT NULL DEFAULT 1,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE assipl_csr_intro_images (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    csr_id INT UNSIGNED NOT NULL,
+
+    image VARCHAR(500) NOT NULL,
+    sort_order INT NOT NULL DEFAULT 0,
+    status TINYINT(1) NOT NULL DEFAULT 1,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_csr_intro_images
+        FOREIGN KEY (csr_id)
+        REFERENCES assipl_csr(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    INDEX idx_csr_intro_images_csr_id (csr_id),
+    INDEX idx_csr_intro_images_sort_order (sort_order)
+);
+
+CREATE TABLE assipl_csr_slider_images (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    csr_id INT UNSIGNED NOT NULL,
+
+    image VARCHAR(500) NOT NULL,
+    sort_order INT NOT NULL DEFAULT 0,
+    status TINYINT(1) NOT NULL DEFAULT 1,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_csr_slider_images
+        FOREIGN KEY (csr_id)
+        REFERENCES assipl_csr(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    INDEX idx_csr_slider_images_csr_id (csr_id),
+    INDEX idx_csr_slider_images_sort_order (sort_order)
+);
+
+ALTER TABLE assipl_csr
+ADD COLUMN meta_keywords TEXT DEFAULT NULL,
+ADD COLUMN og_title VARCHAR(255) DEFAULT NULL,
+ADD COLUMN og_description TEXT DEFAULT NULL,
+ADD COLUMN og_image VARCHAR(255) DEFAULT NULL,
+ADD COLUMN image_alt_text VARCHAR(255) DEFAULT NULL,
+ADD COLUMN robots_index ENUM('index', 'noindex') NOT NULL DEFAULT 'index',
+ADD COLUMN robots_follow ENUM('follow', 'nofollow') NOT NULL DEFAULT 'follow',
+ADD COLUMN published TINYINT(1) NOT NULL DEFAULT 1;

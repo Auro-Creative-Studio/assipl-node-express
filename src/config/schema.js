@@ -19,6 +19,9 @@ const ALLOWED_TABLES = [
   'assipl_contact_form',
   'assipl_career_positions',
   'assipl_career_form',
+  'assipl_csr',
+  'assipl_csr_intro_images',
+  'assipl_csr_slider_images',
 ];
 
 const dropColumnIfExists = async (queryInterface, tableName, columnName) => {

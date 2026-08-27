@@ -18,6 +18,9 @@ const enquireFormRoutes = require('./routes/enquire.form.routes');
 const contactFormEntryRoutes = require('./routes/contact.form.entry.routes');
 const careerPositionRoutes = require('./routes/career.position.routes');
 const careerFormRoutes = require('./routes/career.form.routes');
+const csrRoutes = require('./routes/csr.routes');
+const csrIntroImageRoutes = require('./routes/csr.intro.image.routes');
+const csrSliderImageRoutes = require('./routes/csr.slider.image.routes');
 const app = express();
 
 app.use(cors());
@@ -40,5 +43,8 @@ app.use('/api/enquire-forms', enquireFormRoutes);
 app.use('/api/contact-form-entries', contactFormEntryRoutes);
 app.use('/api/career-positions', careerPositionRoutes);
 app.use('/api/career-forms', careerFormRoutes);
+app.use('/api/csr', csrRoutes);
+app.use('/api/csr-intro-images', csrIntroImageRoutes);
+app.use('/api/csr-slider-images', csrSliderImageRoutes);
 module.exports = app;
 
