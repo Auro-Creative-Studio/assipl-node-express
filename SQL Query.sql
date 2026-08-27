@@ -970,3 +970,14 @@ ADD COLUMN image_alt_text VARCHAR(255) DEFAULT NULL,
 ADD COLUMN robots_index ENUM('index', 'noindex') NOT NULL DEFAULT 'index',
 ADD COLUMN robots_follow ENUM('follow', 'nofollow') NOT NULL DEFAULT 'follow',
 ADD COLUMN published TINYINT(1) NOT NULL DEFAULT 1;
+
+
+ALTER TABLE assipl_products ADD COLUMN menu_title VARCHAR(255) NULL;
+
+ALTER TABLE assipl_products
+  ADD COLUMN sort_order INT NOT NULL DEFAULT 0;
+
+ALTER TABLE assipl_single_service
+  ADD COLUMN sort_order INT NOT NULL DEFAULT 0;
+
+
