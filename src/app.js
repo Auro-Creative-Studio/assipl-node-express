@@ -39,6 +39,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 app.use('/api/seo', seoRoutes);
 app.use('/api/cookie-consents', cookieConsentRoutes);
