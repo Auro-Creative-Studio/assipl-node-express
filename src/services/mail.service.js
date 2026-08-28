@@ -5,7 +5,8 @@ const BRAND_TAGLINE = "Engineering Smarter Security";
 const BRAND_BLUE = "#2455f0";
 const BRAND_DARK = "#111827";
 const SITE_URL = process.env.SITE_URL || "https://automationsystems.co.in";
-const LOGO_URL = `${SITE_URL}/assets/email/logo-dark.png`;
+const BACKEND_URL = process.env.BACKEND_URL || SITE_URL;
+const LOGO_URL = `${BACKEND_URL}/assets/email/logo-dark.png`;
 
 const getMailTransporter = () => {
     if (!process.env.MAIL_USER || !process.env.MAIL_PASS) {
