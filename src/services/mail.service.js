@@ -1,13 +1,11 @@
 const nodemailer = require("nodemailer");
-const path = require("path");
 
 const BRAND_NAME = "ASSIPL";
 const BRAND_TAGLINE = "Engineering Smarter Security";
 const BRAND_BLUE = "#2455f0";
 const BRAND_DARK = "#111827";
-const LOGO_PATH = path.join(__dirname, "../assets/email/logo-dark.png");
-const LOGO_CID = "assipl-logo";
-const SITE_URL = process.env.SITE_URL || "https://assipl.com";
+const SITE_URL = process.env.SITE_URL || "https://automationsystems.co.in";
+const LOGO_URL = `${SITE_URL}/assets/email/logo-dark.png`;
 
 const getMailTransporter = () => {
     if (!process.env.MAIL_USER || !process.env.MAIL_PASS) {
@@ -24,13 +22,6 @@ const getMailTransporter = () => {
         },
     });
 };
-const buildOtpEmailAttachments = () => [
-    {
-        filename: "pen-g-logo.png",
-        path: LOGO_PATH,
-        cid: LOGO_CID,
-    },
-];
 const renderEmailLayout = ({ preheader, bodyHtml }) => `
 <!DOCTYPE html>
 <html lang="en">
@@ -50,7 +41,7 @@ const renderEmailLayout = ({ preheader, bodyHtml }) => `
                 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px; background-color:#ffffff; border-radius:12px; overflow:hidden; border:1px solid #e5e7eb;">
                     <tr>
                         <td align="center" style="padding:32px 32px 16px 32px;">
-                <img src="cid:${LOGO_CID}" alt="assipl-logo" width="132" style="display:block; height:auto; border:0;" />                        </td>
+                <img src="${LOGO_URL}" alt="ASSIPL" width="132" style="display:block; height:auto; border:0;" />                        </td>
                     </tr>
 
                     <tr>
@@ -119,7 +110,6 @@ const sendPasswordResetOtp = async ({ to, otp, expiresInMinutes }) => {
             preheader: `Your OTP is ${otp}. It expires in ${expiresInMinutes} minutes.`,
             bodyHtml,
         }),
-        attachments: buildOtpEmailAttachments(),
     });
 };
 
