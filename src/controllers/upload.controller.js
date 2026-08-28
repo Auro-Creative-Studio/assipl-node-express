@@ -52,6 +52,22 @@ const listUploads = (req, res) => {
     }
 };
 
+const countUploads = (req, res) => {
+    try {
+        const total = fs
+            .readdirSync(uploadPath)
+            .filter((name) => fs.statSync(path.join(uploadPath, name)).isFile()).length;
+
+        return res.json({ success: true, data: { total } });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Failed to count media files.",
+            error: error.message,
+        });
+    }
+};
+
 const createUpload = (req, res) => {
     if (!req.file) {
         return res.status(400).json({ success: false, message: "No file was uploaded." });
@@ -125,6 +141,7 @@ const deleteUpload = (req, res) => {
 
 module.exports = {
     listUploads,
+    countUploads,
     createUpload,
     replaceUpload,
     deleteUpload,
