@@ -63,6 +63,16 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: true,
             },
 
+            securing_image_2: {
+                type: DataTypes.STRING(500),
+                allowNull: true,
+            },
+
+            securing_image_3: {
+                type: DataTypes.STRING(500),
+                allowNull: true,
+            },
+
             future_title: {
                 type: DataTypes.STRING(255),
                 allowNull: true,
