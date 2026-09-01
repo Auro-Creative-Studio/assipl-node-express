@@ -679,6 +679,7 @@ CREATE TABLE assipl_contact_page (
 
     contact_title VARCHAR(255) NOT NULL,
     contact_description TEXT,
+    company_name VARCHAR(255) DEFAULT NULL,
 
     address TEXT NOT NULL,
     email VARCHAR(255) NOT NULL,

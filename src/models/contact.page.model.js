@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
 
             contact_title: { type: DataTypes.STRING(255), allowNull: true },
             contact_description: { type: DataTypes.TEXT, allowNull: true },
+            company_name: { type: DataTypes.STRING(255), allowNull: true },
             address: { type: DataTypes.TEXT, allowNull: true },
             map_link: { type: DataTypes.STRING(500), allowNull: true },
             map_embed_code: { type: DataTypes.TEXT, allowNull: true },
