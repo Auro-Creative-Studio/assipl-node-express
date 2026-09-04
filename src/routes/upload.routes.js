@@ -18,10 +18,10 @@ const handleUpload = (req, res, next) => {
     });
 };
 
-// router.get("/", auth, uploadController.listUploads);
-// router.get("/count", auth, uploadController.countUploads);
+router.get("/", auth, uploadController.listUploads);
+router.get("/count", auth, uploadController.countUploads);
 router.post("/", handleUpload, uploadController.createUpload);
-// router.put("/:filename", auth, handleUpload, uploadController.replaceUpload);
-// router.delete("/:filename", auth, uploadController.deleteUpload);
+router.put("/:filename", auth, handleUpload, uploadController.replaceUpload);
+router.delete("/:filename", auth, uploadController.deleteUpload);
 
 module.exports = router;

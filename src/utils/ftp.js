@@ -1,6 +1,7 @@
 const ftp = require("basic-ftp");
+const stream = require("stream");
 
-const uploadToCpanel = async (file) => {
+const withFtpClient = async (fn) => {
     const client = new ftp.Client();
 
     try {
@@ -14,6 +15,14 @@ const uploadToCpanel = async (file) => {
             secure: process.env.CPANEL_FTP_SECURE === "true",
         });
 
+        return await fn(client);
+    } finally {
+        client.close();
+    }
+};
+
+const uploadToCpanel = async (file) => {
+    return withFtpClient(async (client) => {
         await client.ensureDir(process.env.CPANEL_UPLOAD_PATH);
 
         const extension = file.originalname.includes(".")
@@ -34,7 +43,6 @@ const uploadToCpanel = async (file) => {
         const remotePath =
             `${process.env.CPANEL_UPLOAD_PATH}/${filename}`;
 
-        const stream = require("stream");
         const bufferStream = new stream.PassThrough();
 
         bufferStream.end(file.buffer);
@@ -46,11 +54,47 @@ const uploadToCpanel = async (file) => {
             size: file.size,
             original_name: file.originalname,
         };
-    } finally {
-        client.close();
-    }
+    });
+};
+
+const listUploadsFromCpanel = async () => {
+    return withFtpClient(async (client) => {
+        const entries = await client.list(process.env.CPANEL_UPLOAD_PATH);
+
+        return entries
+            .filter((entry) => entry.isFile)
+            .map((entry) => ({
+                filename: entry.name,
+                size: entry.size,
+                modifiedAt: entry.modifiedAt || entry.rawModifiedAt || null,
+            }));
+    });
+};
+
+const replaceOnCpanel = async (filename, file) => {
+    return withFtpClient(async (client) => {
+        await client.ensureDir(process.env.CPANEL_UPLOAD_PATH);
+
+        const remotePath = `${process.env.CPANEL_UPLOAD_PATH}/${filename}`;
+        const bufferStream = new stream.PassThrough();
+
+        bufferStream.end(file.buffer);
+
+        await client.uploadFrom(bufferStream, remotePath);
+
+        return { filename, size: file.size };
+    });
+};
+
+const deleteFromCpanel = async (filename) => {
+    return withFtpClient(async (client) => {
+        await client.remove(`${process.env.CPANEL_UPLOAD_PATH}/${filename}`);
+    });
 };
 
 module.exports = {
     uploadToCpanel,
+    listUploadsFromCpanel,
+    replaceOnCpanel,
+    deleteFromCpanel,
 };
