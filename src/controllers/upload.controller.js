@@ -1,8 +1,5 @@
-const axios = require("axios");
-const FormData = require("form-data");
-
-const CPANEL_UPLOAD_URL = process.env.CPANEL_UPLOAD_URL;
-const CPANEL_UPLOAD_SECRET = process.env.CPANEL_UPLOAD_SECRET;
+const path = require("path");
+const { uploadToCpanel } = require("../utils/ftp");
 
 const RESUME_MAX_SIZE = 5 * 1024 * 1024;
 
@@ -25,6 +22,7 @@ const createUpload = async (req, res) => {
             });
         }
 
+        // Resume/PDF maximum size = 5MB
         if (
             req.file.mimetype === "application/pdf" &&
             req.file.size > RESUME_MAX_SIZE
@@ -35,42 +33,10 @@ const createUpload = async (req, res) => {
             });
         }
 
-        const form = new FormData();
+        // Upload file to cPanel via FTP
+        const uploadedFile = await uploadToCpanel(req.file);
 
-        form.append("file", req.file.buffer, {
-            filename: req.file.originalname,
-            contentType: req.file.mimetype,
-            knownLength: req.file.size,
-        });
-
-        const response = await axios.post(
-            CPANEL_UPLOAD_URL,
-            form,
-            {
-                headers: {
-                    ...form.getHeaders(),
-                    "X-Upload-Secret": CPANEL_UPLOAD_SECRET,
-                },
-                maxContentLength: 25 * 1024 * 1024,
-                maxBodyLength: 25 * 1024 * 1024,
-            }
-        );
-
-        if (!response.data?.success) {
-            return res.status(500).json({
-                success: false,
-                message: response.data?.message || "File storage failed.",
-            });
-        }
-
-        const uploadedFile = response.data;
-
-        const extension =
-            "." +
-            uploadedFile.filename
-                .split(".")
-                .pop()
-                .toLowerCase();
+        const extension = path.extname(uploadedFile.filename).toLowerCase();
 
         const fileInfo = {
             filename: uploadedFile.filename,
@@ -87,17 +53,12 @@ const createUpload = async (req, res) => {
         });
 
     } catch (error) {
-        console.error(
-            "Upload error:",
-            error.response?.data || error.message
-        );
+        console.error("Upload error:", error);
 
         return res.status(500).json({
             success: false,
             message: "Failed to upload file.",
-            error:
-                error.response?.data?.message ||
-                error.message,
+            error: error.message,
         });
     }
 };
