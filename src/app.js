@@ -1,7 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-const axios = require('axios');
-const path = require('path');
 // const fs = require('fs');
 const sitemapRoutes = require('./routes/sitemap.routes');
 // const { renderIndexHtml } = require('./utils/renderIndexHtml');
@@ -41,41 +39,6 @@ app.use(cors());
 app.use(express.json());
 // app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 // app.use('/assets', express.static(path.join(__dirname, 'assets')));
-
-app.get('/uploads/:filename', async (req, res) => {
-    try {
-        const filename = path.basename(req.params.filename);
-
-        const fileUrl = `${process.env.CPANEL_MEDIA_URL}/uploads/${encodeURIComponent(filename)}`;
-
-        const response = await axios.get(fileUrl, {
-            responseType: 'arraybuffer',
-        });
-
-        res.set(
-            'Content-Type',
-            response.headers['content-type'] || 'application/octet-stream'
-        );
-
-        res.set(
-            'Cache-Control',
-            'public, max-age=31536000, immutable'
-        );
-
-        return res.send(response.data);
-
-    } catch (error) {
-        console.error(
-            'Failed to fetch uploaded file:',
-            error.response?.status || error.message
-        );
-
-        return res.status(404).json({
-            success: false,
-            message: 'File not found.',
-        });
-    }
-});
 
 app.use('/api/seo', seoRoutes);
 app.use('/api/cookie-consents', cookieConsentRoutes);
