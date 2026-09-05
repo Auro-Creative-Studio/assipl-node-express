@@ -63,7 +63,7 @@ const createUpload = async (req, res) => {
             type: getFileType(extension),
             extension,
             size: uploadedFile.size,
-            url: uploadedFile.url || null,
+            url: `${process.env.CPANEL_MEDIA_URL}/uploads/${uploadedFile.filename}`,
         };
 
         return res.status(201).json({
