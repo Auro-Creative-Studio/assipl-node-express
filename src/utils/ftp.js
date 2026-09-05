@@ -62,7 +62,7 @@ const listUploadsFromCpanel = async () => {
         const entries = await client.list(process.env.CPANEL_UPLOAD_PATH);
 
         return entries
-            .filter((entry) => entry.isFile)
+            .filter((entry) => entry.isFile && !entry.name.startsWith("."))
             .map((entry) => ({
                 filename: entry.name,
                 size: entry.size,
